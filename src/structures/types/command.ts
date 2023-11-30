@@ -1,6 +1,6 @@
 import { CreateSlashApplicationCommand } from "../../deps.ts";
-import { InteractionContext } from "../commands/interactionContext.ts";
+import { ChatInputInteractionContext } from "../commands/chatInputInteractionContext.ts";
 
 export interface ChatInputInteractionCommand extends Readonly<CreateSlashApplicationCommand> {
-  readonly execute: (context: InteractionContext) => Promise<unknown>
+  readonly execute: (context: ChatInputInteractionContext) => Promise<unknown>
 }

@@ -1,7 +1,7 @@
 import { honami } from "../../client/honami.ts";
 import { Interaction, InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts";
 
-export class InteractionContext {
+export class ChatInputInteractionContext {
   replied = false
   constructor(private interaction: Interaction) {}
 
@@ -11,7 +11,7 @@ export class InteractionContext {
     return options.find(opt => opt.name === name)?.value as T
   }
 
-  respondInteraction = async (options: InteractionCallbackData) => {
+  sendReply = async (options: InteractionCallbackData) => {
     this.replied = true
     await honami.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,

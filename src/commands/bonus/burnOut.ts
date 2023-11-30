@@ -12,7 +12,7 @@ export default createCommand({
       return
     }
 
-    await ctx.respondInteraction({ content: Messages.Bonus.Stop })
+    await ctx.sendReply({ content: Messages.Bonus.Stop })
 
     honami.reminders.get(ReminderTypes.BURN)?.stop()
     honami.reminders.delete(ReminderTypes.BURN)
