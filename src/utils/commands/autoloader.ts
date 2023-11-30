@@ -1,6 +1,7 @@
 import { fs, path } from "../../deps.ts";
 import { ChatInputInteractionCommand } from "../../structures/types/mod.ts";
 import { honami } from "../../client/honami.ts";
+import { Config } from "../../config/config.ts";
 
 export const loadCommands = async (): Promise<void> => {
   const base = "src/commands/"
@@ -24,7 +25,7 @@ export const loadCommands = async (): Promise<void> => {
 const upsertApplicationCommands = async () => {
   try {
     await honami.helpers.upsertGuildApplicationCommands(
-      honami.allowedGuildID,
+      Config.ALLOWED_GUILD_ID, // too bad..
       honami.commands.array(),
     )
   } catch (error) {
