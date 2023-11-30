@@ -9,8 +9,8 @@ export type ReminderType = typeof ReminderTypes[keyof typeof ReminderTypes]
 export class Reminder {
   constructor(private type: ReminderType) {}
 
-  readonly start = async (minute: number, callback: (...args: unknown[]) => void) => {
-    const id = setInterval(callback, minute * 1000)
+  readonly start = async (delay: number, callback: (...args: unknown[]) => void) => {
+    const id = setInterval(callback, delay)
     await honami.kv.set(["reminder", this.type], id)
   }
 
