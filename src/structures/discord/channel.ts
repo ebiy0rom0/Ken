@@ -15,3 +15,5 @@ export class Channel {
   edit = async (opt: ModifyChannel) => await honami.helpers.editChannel(this.id, opt)
   delete = async (id: bigint) => await honami.helpers.deleteMessage(this.id, id)
 }
+
+export const botChannel = new Channel(honami.botInfoChannelID)
