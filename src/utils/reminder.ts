@@ -7,11 +7,7 @@ export const ReminderTypes = {
 export type ReminderType = typeof ReminderTypes[keyof typeof ReminderTypes]
 
 export class Reminder {
-  type: ReminderType
-
-  constructor(type: ReminderType) {
-    this.type = type
-  }
+  constructor(private type: ReminderType) {}
 
   readonly start = async (minute: number, callback: (...args: unknown[]) => void) => {
     const id = setInterval(callback, minute * 1000)
