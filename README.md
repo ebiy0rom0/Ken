@@ -1,2 +1,13 @@
-# auto-ch_name_edibot
-# auto edit for discord channnel's name
+# Ken for disocrd bot
+
+## Introduction
+Todo
+
+## Motivation
+Todo
+
+## Features
+Todo
+
+## Configuration
+Todo
