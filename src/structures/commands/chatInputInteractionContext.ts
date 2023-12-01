@@ -11,10 +11,18 @@ export class ChatInputInteractionContext {
     return options.find(opt => opt.name === name)?.value as T
   }
 
-  sendReply = async (options: InteractionCallbackData) => {
+  reply = async (options: InteractionCallbackData) => {
     this.replied = true
     await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options
+    })
+  }
+
+  sendReply = async (options: InteractionCallbackData) => {
+    this.replied = true
+    await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.Modal,
       data: options
     })
   }
