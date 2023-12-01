@@ -1,4 +1,4 @@
-import { honami } from "../../client/honami.ts";
+import { ken } from "../../client/ken.ts";
 import { Messages } from "../../config/messages.ts";
 import { ApplicationCommandOptionTypes } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
@@ -17,7 +17,7 @@ export default createCommand({
   ],
 
   execute: async ctx => {
-    if (honami.reminders.has(ReminderTypes.BURN)) {
+    if (ken.reminders.has(ReminderTypes.BURN)) {
       return
     }
 
@@ -25,11 +25,11 @@ export default createCommand({
 
     const interval = ctx.getOption<number>("interval") ?? 15
     const reminder = new Reminder(ReminderTypes.BURN)
-    const channel = new Channel(honami.listenOnlyChannelID)
+    const channel = new Channel(ken.listenOnlyChannelID)
     reminder.start(
       interval * 1000,
       async () => await channel.send({ content: "<:emoji_14:1176498845333598269>" })
     )
-    honami.reminders.set(ReminderTypes.BURN, reminder)
+    ken.reminders.set(ReminderTypes.BURN, reminder)
   }
 })

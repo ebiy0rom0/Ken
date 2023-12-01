@@ -1,3 +1,3 @@
 export * from "./command.ts"
 
-export * from "./honami.ts"
+export * from "./ken.ts"

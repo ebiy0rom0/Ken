@@ -1,7 +1,7 @@
-import { honami } from "../../client/honami.ts";
+import { ken } from "../../client/ken.ts";
 
 export const setReadyEvents = () => {
-  honami.events.ready = async (_, payload) => {
+  ken.events.ready = async (_, payload) => {
     console.log(`${await payload.user.username} is ready!`)
   }
 }

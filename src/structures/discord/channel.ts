@@ -1,4 +1,4 @@
-import { honami } from "../../client/honami.ts";
+import { ken } from "../../client/ken.ts";
 import { CreateMessage, ModifyChannel } from "../../deps.ts"
 
 export class Channel {
@@ -7,11 +7,11 @@ export class Channel {
   }
 
   private exists = async () => {
-    if (!(await honami.guild.channels()).has(this.id)) throw Error(`Channel is not exists: ${this.id}`)
+    if (!(await ken.guild.channels()).has(this.id)) throw Error(`Channel is not exists: ${this.id}`)
   }
 
-  messages = async () => await honami.helpers.getMessages(this.id)
-  send = async (opt: CreateMessage) => await honami.helpers.sendMessage(this.id, opt)
-  edit = async (opt: ModifyChannel) => await honami.helpers.editChannel(this.id, opt)
-  delete = async (id: bigint) => await honami.helpers.deleteMessage(this.id, id)
+  messages = async () => await ken.helpers.getMessages(this.id)
+  send = async (opt: CreateMessage) => await ken.helpers.sendMessage(this.id, opt)
+  edit = async (opt: ModifyChannel) => await ken.helpers.editChannel(this.id, opt)
+  delete = async (id: bigint) => await ken.helpers.deleteMessage(this.id, id)
 }

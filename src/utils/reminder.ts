@@ -1,4 +1,4 @@
-import { honami } from "../client/honami.ts";
+import { ken } from "../client/ken.ts";
 
 export const ReminderTypes = {
   BURN: 1
@@ -11,14 +11,14 @@ export class Reminder {
 
   readonly start = async (delay: number, callback: (...args: unknown[]) => void) => {
     const id = setInterval(callback, delay)
-    await honami.kv.set(["reminder", this.type], id)
+    await ken.kv.set(["reminder", this.type], id)
   }
 
   readonly stop = async () => {
-    const result = await honami.kv.get(["reminder", this.type])
+    const result = await ken.kv.get(["reminder", this.type])
     if (!result.value) return
 
     clearInterval(+result.value)
-    await honami.kv.delete(["reminder", this.type])
+    await ken.kv.delete(["reminder", this.type])
   }
 }

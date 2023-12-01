@@ -1,4 +1,4 @@
-import { honami } from "../../client/honami.ts";
+import { ken } from "../../client/ken.ts";
 import { Interaction, InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts";
 
 export class ChatInputInteractionContext {
@@ -13,7 +13,7 @@ export class ChatInputInteractionContext {
 
   sendReply = async (options: InteractionCallbackData) => {
     this.replied = true
-    await honami.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+    await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options
     })

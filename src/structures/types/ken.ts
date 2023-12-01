@@ -6,7 +6,7 @@ import { Channel } from "../discord/channel.ts";
 import { Guild } from "../discord/guild.ts";
 import { ChatInputInteractionCommand } from "./command.ts";
 
-export interface Honami extends Bot {
+export interface Ken extends Bot {
   kv: Deno.Kv
   guild: Guild
   botChannel: Channel

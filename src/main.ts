@@ -1,9 +1,9 @@
 import { startBot } from "./deps.ts"
-import { honami } from "./client/honami.ts"
+import { ken } from "./client/ken.ts"
 import { setupEvents } from "./events/mod.ts";
-import { setupHonamiMama } from "./structures/client/honami.ts";
+import { setupKen } from "./structures/client/ken.ts";
 
 setupEvents()
-setupHonamiMama()
+setupKen()
 
-await startBot(honami)
+await startBot(ken)

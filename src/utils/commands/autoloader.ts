@@ -1,6 +1,6 @@
 import { fs, path } from "../../deps.ts";
 import { ChatInputInteractionCommand } from "../../structures/types/mod.ts";
-import { honami } from "../../client/honami.ts";
+import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
 
 export const loadCommands = async (): Promise<void> => {
@@ -13,20 +13,20 @@ export const loadCommands = async (): Promise<void> => {
 
       const command = (await import(path.resolve(base, subdir.name, file.name))).default as ChatInputInteractionCommand
       try {
-        honami.commands.set(command.name, command)
+        ken.commands.set(command.name, command)
       } catch (error) {
         console.log(`Error loading command: ${error}`)
       }
     }
   }
-  honami.commands.size > 0 ? upsertApplicationCommands() : console.log("No commands")
+  ken.commands.size > 0 ? upsertApplicationCommands() : console.log("No commands")
 }
 
 const upsertApplicationCommands = async () => {
   try {
-    await honami.helpers.upsertGuildApplicationCommands(
+    await ken.helpers.upsertGuildApplicationCommands(
       Config.ALLOWED_GUILD_ID, // too bad..
-      honami.commands.array(),
+      ken.commands.array(),
     )
   } catch (error) {
     console.log(`Error while registing commands: ${error}`)
