@@ -13,3 +13,6 @@ export * as denoCron from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
 export * as ptera from "https://deno.land/x/ptera@v1.0.2/mod.ts";
 // OpenAI(ChatGPT)
 export * as OpenAI from 'https://deno.land/x/openai@v4.20.0/mod.ts';
+// Sheet.js
+export * as xlsx from 'https://cdn.sheetjs.com/xlsx-0.20.0/package/xlsx.mjs';
+
