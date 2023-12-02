@@ -12,7 +12,7 @@ export default createCommand({
       return
     }
 
-    await ctx.sendReply({ content: Messages.Bonus.Stop })
+    await ctx.reply({ content: Messages.Bonus.Stop })
 
     ken.reminders.get(ReminderTypes.BURN)?.stop()
     ken.reminders.delete(ReminderTypes.BURN)

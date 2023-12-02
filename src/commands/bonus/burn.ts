@@ -21,7 +21,7 @@ export default createCommand({
       return
     }
 
-    await ctx.sendReply({ content: Messages.Bonus.Start })
+    await ctx.reply({ content: Messages.Bonus.Start })
 
     const interval = ctx.getOption<number>("interval") ?? 15
     const reminder = new Reminder(ReminderTypes.BURN)
