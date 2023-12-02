@@ -4,5 +4,5 @@ import { Ken } from "../structures/types/ken.ts";
 
 export const ken = createBot({
   token: Config.DISCORD_TOKEN,
-  intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
+  intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent | Intents.GuildVoiceStates,
 }) as Ken
