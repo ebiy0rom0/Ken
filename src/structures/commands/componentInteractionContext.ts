@@ -1,9 +1,8 @@
-import { Interaction, InteractionTypes } from "../../deps.ts";
+import { InteractionContext } from "./interactionContext.ts";
 
-export class ComponentInteractionContext {
-  constructor(private interaction: Interaction) {}
-
-  hoge = () => {
-    const type = this.interaction.type & InteractionTypes.MessageComponent
+export class ComponentInteractionContext extends InteractionContext {
+  getOption = <T>(name: string): T | undefined => {
+    const row = this.interaction.data?.components?.shift()
+    return row?.components?.find(component => component.customId = name)?.value as T
   }
 }

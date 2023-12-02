@@ -1,29 +1,16 @@
 import { ken } from "../../client/ken.ts";
-import { Interaction, InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts";
+import { InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts";
+import { InteractionContext } from "./interactionContext.ts";
 
-export class ChatInputInteractionContext {
-  replied = false
-  constructor(private interaction: Interaction) {}
-
-  getOption = <T>(name: string): T | undefined => {
-    const options = this.interaction.data?.options ?? []
-    console.log(options.find(opt => opt.name === name))
-    return options.find(opt => opt.name === name)?.value as T
-  }
-
-  reply = async (options: InteractionCallbackData) => {
-    this.replied = true
-    await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: options
-    })
-  }
-
-  sendReply = async (options: InteractionCallbackData) => {
+export class ChatInputInteractionContext extends InteractionContext {
+  replyWithModal = async (options: InteractionCallbackData) => {
     this.replied = true
     await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.Modal,
-      data: options
+      data: {
+        customId: this.interaction.data?.name!,
+        ...options
+      }
     })
   }
 }
