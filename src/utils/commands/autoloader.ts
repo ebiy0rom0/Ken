@@ -6,7 +6,7 @@ import { Config } from "../../config/config.ts";
 export const loadCommands = async (): Promise<void> => {
   const base = "src/commands/"
   for await (const subdir of fs.walkSync(path.resolve(base))) {
-    if (!await fs.exists(path.resolve(base, subdir.name))) continue
+    if (!await fs.exists(path.resolve(base, subdir.name)) || !subdir.isDirectory) continue
 
     for await (const file of fs.walkSync(path.resolve(base, subdir.name))) {
       if (!file.isFile) continue
