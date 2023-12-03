@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { MemberToggles, Optionalize } from "../../deps.ts";
-import { DiscordMember } from "../types/member.ts";
+import { DiscordMember } from "../types/mod.ts";
 import { transformUser } from "./user.ts";
 
 export function  transformMember(payload: DiscordMember, guildId: bigint, userId: bigint) {

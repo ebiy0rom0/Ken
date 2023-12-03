@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { transformMember } from "../transformers/member.ts";
-import { DiscordMemberWithUser } from "../types/member.ts";
+import { DiscordMemberWithUser } from "../types/mod.ts";
 
 export class Guild {
   constructor(private id: bigint) {}

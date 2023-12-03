@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Optionalize, UserToggles } from "../../deps.ts";
-import { DiscordUser } from "../types/user.ts";
+import { DiscordUser } from "../types/mod.ts";
 
 export function transformUser(payload: DiscordUser) {
   const user = {
