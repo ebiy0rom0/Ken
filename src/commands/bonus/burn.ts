@@ -30,6 +30,5 @@ export default createCommand({
       interval * 1000,
       async () => await channel.send({ content: "<:emoji_14:1176498845333598269>" })
     )
-    ken.reminders.set(ReminderTypes.BURN, reminder)
   }
 })

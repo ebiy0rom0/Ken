@@ -11,10 +11,8 @@ export default createCommand({
     if (!ken.reminders.has(ReminderTypes.BURN)) {
       return
     }
-
     await ctx.reply({ content: Messages.Bonus.Stop })
 
     ken.reminders.get(ReminderTypes.BURN)?.stop()
-    ken.reminders.delete(ReminderTypes.BURN)
   }
 })

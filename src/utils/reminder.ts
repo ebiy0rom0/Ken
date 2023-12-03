@@ -7,18 +7,16 @@ export const ReminderTypes = {
 export type ReminderType = typeof ReminderTypes[keyof typeof ReminderTypes]
 
 export class Reminder {
+  #id = 0
   constructor(private type: ReminderType) {}
 
-  readonly start = async (delay: number, callback: (...args: unknown[]) => void) => {
-    const id = setInterval(callback, delay)
-    await ken.kv.set(["reminder", this.type], id)
+  readonly start = (delay: number, callback: (...args: unknown[]) => void) => {
+    this.#id = setInterval(callback, delay)
+    ken.reminders.set(this.type, this)
   }
 
-  readonly stop = async () => {
-    const result = await ken.kv.get(["reminder", this.type])
-    if (!result.value) return
-
-    clearInterval(+result.value)
-    await ken.kv.delete(["reminder", this.type])
+  readonly stop = () => {
+    clearInterval(this.#id)
+    ken.reminders.delete(this.type)
   }
 }
