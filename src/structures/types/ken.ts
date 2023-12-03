@@ -10,6 +10,7 @@ export interface Ken extends Bot {
   kv: Deno.Kv
   guild: Guild
   botChannel: Channel
+  voiceChannelID: bigint
   roomChannelID: bigint
   listenOnlyChannelID: bigint
   commands: Collection<string, ChatInputInteractionCommand>
