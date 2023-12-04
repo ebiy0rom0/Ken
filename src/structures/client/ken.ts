@@ -5,6 +5,7 @@ import { ken } from "../../client/ken.ts";
 import { Guild } from "../discord/guild.ts";
 import { Channel } from "../discord/channel.ts";
 import { ShiftRecruiter } from "../../utils/shiftRecruiter.ts";
+import { PointCalculator } from "../../utils/pointCalculator.ts";
 
 export const setupKen = async () => {
   ken.kv = await Deno.openKv()
@@ -16,5 +17,6 @@ export const setupKen = async () => {
   ken.commands = new Collection()
   ken.reminders = new Collection()
   ken.recruiter = new ShiftRecruiter()
+  ken.calcurator = new PointCalculator()
   loadCommands()
 }

@@ -1,5 +1,6 @@
 import { Bot, Collection } from "../../deps.ts";
 import { Reminder } from "../../utils/mod.ts";
+import { PointCalculator } from "../../utils/pointCalculator.ts";
 import { ReminderType } from "../../utils/reminder.ts";
 import { ShiftRecruiter } from "../../utils/shiftRecruiter.ts";
 import { Channel } from "../discord/channel.ts";
@@ -16,4 +17,5 @@ export interface Ken extends Bot {
   commands: Collection<string, ChatInputInteractionCommand>
   reminders: Collection<ReminderType, Reminder>
   recruiter: ShiftRecruiter
+  calcurator: PointCalculator
 }
