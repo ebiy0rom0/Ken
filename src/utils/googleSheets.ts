@@ -1,8 +1,6 @@
 import { JWT } from "npm:google-auth-library"
 import { GoogleSpreadsheet } from "npm:google-spreadsheet"
 
-const DOCUMENT_ID=""
-
 import creds from "./test.json" assert { type: "json" };
 
 const jwt = new JWT({
@@ -34,8 +32,8 @@ try {
   const rows = await sheet.getRows()
   const date = rows[1]
 
-  const userRow = rows.find(v => v.get("userId") == "sh12ku_prsk")!
-  console.log(`ユーザー:${userRow.get("name")}`)
+  const userRow = rows.find(v => v.get("username") === "sh12ku_prsk")
+  console.log(`ユーザー:${userRow?.get("name")}`)
 
   const index = ((target: string) => {
     for (let i = 0; i < headers.length; i ++) {
@@ -48,7 +46,11 @@ try {
   console.log(`12月5日 シフトX座標:${index}`)
 
   shift.forEach((v, i) => { if (v) { userRow.set(headers[index + i], "o") } })
-  userRow.save()
+  userRow.save({ raw: true })
+
+  const newRow = await sheet.addRows([...rows, { username: "name", name: "test" }])
+  shift.forEach((v, i) => { if (v) { newRow.set(headers[index + i], "o") } })
+  newRow.save()
 } catch(e) {
   console.log(`[ERROR]:${e}`)
 }
