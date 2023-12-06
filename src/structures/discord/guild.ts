@@ -10,7 +10,7 @@ export class Guild {
     const results = await ken.rest.runMethod<DiscordMemberWithUser[]>(
       ken.rest,
       "GET",
-      ken.constants.routes.GUILD_MEMBERS(this.id, {}),
+      ken.constants.routes.GUILD_MEMBERS(this.id, { limit: 100 }),
     )
 
     return new Collection(
@@ -28,4 +28,7 @@ export class Guild {
     )
     return await transformMember(result, this.id, id)
   }
+
+  memberByUsername = async (username: string) =>
+    (await this.members()).find(member => member.user?.username === username)
 }
