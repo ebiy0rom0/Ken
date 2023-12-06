@@ -1,9 +1,11 @@
 import { ken } from "../client/ken.ts";
-import { denoCron, ptera } from "../deps.ts";
+import { denoCron, ptera, Channel as Channelx } from "../deps.ts";
 import { Channel } from "../structures/discord/channel.ts";
+import { SheetTimelineHelper } from "./googleSheet/sheetTimelineHelper.ts";
 
 export class ShiftRecruiter {
   #demoDay: ptera.DateTime  // demo only
+  tlHelper: SheetTimelineHelper
 
   constructor () {
     this.#demoDay = ptera.datetime({
@@ -11,6 +13,7 @@ export class ShiftRecruiter {
       month: ptera.datetime().month,
       day: ptera.datetime().day
     });
+    this.tlHelper = new SheetTimelineHelper()
 
     denoCron.cron("5 */1 * * * *", async () => {
       await this.closeRecruit()
@@ -34,21 +37,22 @@ export class ShiftRecruiter {
 
     ken.botChannel.send({ content: `${target.format("MM月dd日")}の募集を開始します` })
 
-    const startRecruitChannelID = await this.getRecruitChannelID(target)
-    if (startRecruitChannelID) {
-      const recruitChannel = new Channel(startRecruitChannelID)
-      await recruitChannel.send({ content: "ごろにゃ～ん" })
-      await ken.kv.set(["recruit", "id"], startRecruitChannelID)
+    const startRecruitChannel = await this.getRecruitChannel(target)
+    if (startRecruitChannel) {
+      const recruitChannel = new Channel(startRecruitChannel.id)
+      await recruitChannel.send({ content: "<@&1182025900359942226>\rシフト募集を開始します" })
+      await ken.kv.set(["recruit", "id"], startRecruitChannel.id)
+      await ken.kv.set(["recruit", "date"], target.format("MM月d日"))
     } else {
-      await ken.botChannel.send({ content: "うにゃ～ん？" })
+      await ken.botChannel.send({ content: "募集先のチャンネルがない" })
     }
   }
 
   private closeRecruit = async () => {
-    const timeline = new Map<string, number[]>()
+    const timeline = new Map<string, boolean[]>()
     await ken.botChannel.send({ content: `募集中のチャンネルでの募集を終了します` })
 
-    const closeRecruitChannelID = (await ken.kv.get(["recruit", "id"])).value as bigint
+    const closeRecruitChannelID = (await ken.kv.get<bigint>(["recruit", "id"])).value
     if (closeRecruitChannelID) {
       const recruitChannel = new Channel(closeRecruitChannelID)
       await recruitChannel.send({ content: `シフト募集を終了します` })
@@ -64,10 +68,11 @@ export class ShiftRecruiter {
 
         const requests = requestContent.replace(/\s+/g, "").split(",")
 
-        timeline.set(user.user?.username!, requests.flatMap(request => {
+        const times = requests.flatMap(request => {
           const se = request.split("-")
           return [...Array(+se[1] - +se[0])].map((_, i) => i + +se[0])
-        }))
+        })
+        timeline.set(user.user?.username!, [...Array(24).fill(false).map((_, i) => times.includes(i))])
       }))
       await ken.kv.delete(["recruit", "id"])
 
@@ -75,7 +80,11 @@ export class ShiftRecruiter {
       await ken.botChannel.send({ content: `募集中のチャンネルがありません` })
     }
 
-    timeline.forEach(async (times, user) => await ken.botChannel.send({ content: `${user}|${times.join(",")}` }))
+    const date = await ken.kv.get<string>(["recruit", "date"])
+    timeline.forEach(async (times, user) => {
+      await this.tlHelper.setTimeline(date.value!, user, times)
+      await ken.botChannel.send({ content: `${user}|${times.join(",")}` })
+    })
   }
 
   nextDay = async () => {
@@ -85,22 +94,20 @@ export class ShiftRecruiter {
 
   resetDay = () => this.#demoDay = ptera.datetime()
 
-  getRecruitChannelID = async (dt: ptera.DateTime): Promise<bigint | false> => {
-    const shiftChannel = (await ken.guild.channels()).filter(
+  getRecruitChannel = async (dt: ptera.DateTime): Promise<Channelx | undefined> => (
+    await ken.guild.channels()).filter(
       ch => ch.name !== undefined && Boolean(ch.name.match(/^[0-9]+月[0-9]+日.*$/))
     ).find(ch => {
-      const only = ch.name ? ch.name.split(/_/)[0] : ""
-      const month = this.getMonthFromJpCalendar(only)
-      const day = this.getDayFromJpCalendar(only)
+      const date = ch.name ? ch.name.split(/_/)[0] : ""
+      const month = this.getMonthFromJpCalendar(date)
+      const day = this.getDayFromJpCalendar(date)
 
       if (!month || !day) return false
 
       const check = ptera.datetime({ year: ptera.datetime().year, month: month, day: day })
       return ptera.diffInDays(dt, check) === 0
-    })
-
-    return shiftChannel ? shiftChannel.id : false
-  }
+    }
+  )
 
   getFromJpCalendar = (dt: string, pattern: RegExp): number | false => {
     const m = dt.match(pattern)
