@@ -6,7 +6,7 @@ export class GoogleSheetWorkbook {
   private doc: GoogleSpreadsheet
 
   private constructor () {
-    if (typeof window !== "undefined") throw Error("Don't call this class in browser.")
+    // if (typeof window !== "undefined") throw Error("Don't call this class in browser.")
     this.doc = new GoogleSpreadsheet(Deno.env.get("DOCUMENT_ID")!, new JWT({
       email: Deno.env.get("GOOGLE_SERVICE_ACCOUNT_EMAIL")!,
       key: Deno.env.get("GOOGLE_PRIVATE_KEY")!,
