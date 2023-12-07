@@ -3,10 +3,10 @@ import { CreateMessage, ModifyChannel } from "../../deps.ts"
 
 export class Channel {
   constructor(private id: bigint) {
-    this.exists()
+    (async () => await this.existChannel())()
   }
 
-  private exists = async () => {
+  private existChannel = async () => {
     if (!(await ken.guild.channels()).has(this.id)) throw Error(`Channel is not exists: ${this.id}`)
   }
 
