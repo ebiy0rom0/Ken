@@ -20,14 +20,14 @@ export const setVoiceStateUpdate = () => {
     if (voiceState.channelId) {
       if (await vc.isEntered(member.id)) return
 
-      vc.entryMember(member.id)
-      if (await vc.isFirstParticipant()) {
+      vc.entry(member.id)
+      if (await vc.isFirstEntry()) {
         ken.botChannel.send({ content: `営業開始 DA☆` })
       }
 
     } else {
-      vc.exitMember(member.id)
-      if (await vc.isNoParticipant()) {
+      vc.exit(member.id)
+      if (await vc.isEmpty()) {
         await ken.botChannel.send({ content: `営業終了 DA☆` })
       }
     }
