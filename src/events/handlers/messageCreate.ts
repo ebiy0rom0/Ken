@@ -1,4 +1,5 @@
 import { ken } from "../../client/ken.ts";
+import { Config } from "../../config/config.ts";
 import { Channel } from "../../structures/discord/channel.ts";
 
 export const setMessageCreateEvents = () => {
@@ -10,7 +11,7 @@ export const setMessageCreateEvents = () => {
     switch (true) {
       case Boolean(message.content.match(/^[0-9]{5}$/)):
         {
-          if (message.channelId !== ken.roomChannelID) break
+          if (message.channelId !== ken.transformers.snowflake(Config.ROOM_CHANNEL_ID)) break
 
           await channel.delete(message.id)
           await channel.send({ content: `# ${message.content}` })

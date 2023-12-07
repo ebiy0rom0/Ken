@@ -1,4 +1,5 @@
 import { ken } from "../../client/ken.ts";
+import { Config } from "../../config/config.ts";
 import { Messages } from "../../config/messages.ts";
 import { ApplicationCommandOptionTypes } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
@@ -25,7 +26,7 @@ export default createCommand({
 
     const interval = ctx.getOption<number>("interval") ?? 15
     const reminder = new Reminder(ReminderTypes.BURN)
-    const channel = new Channel(ken.listenOnlyChannelID)
+    const channel  = new Channel(ken.transformers.snowflake(Config.LISTEN_ONLY_CHANNEL_ID))
     reminder.start(
       interval * 1000,
       async () => await channel.send({ content: "<:emoji_14:1176498845333598269>" })
