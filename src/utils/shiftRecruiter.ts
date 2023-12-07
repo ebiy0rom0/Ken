@@ -5,7 +5,7 @@ import { SheetTimelineHelper } from "./googleSheet/sheetTimelineHelper.ts";
 
 export class ShiftRecruiter {
   #demoDay: ptera.DateTime  // demo only
-  tlHelper: SheetTimelineHelper
+  sheetTimelineHelper: SheetTimelineHelper
 
   constructor () {
     this.#demoDay = ptera.datetime({
@@ -13,7 +13,7 @@ export class ShiftRecruiter {
       month: ptera.datetime().month,
       day: ptera.datetime().day
     });
-    this.tlHelper = new SheetTimelineHelper()
+    this.sheetTimelineHelper = new SheetTimelineHelper()
 
     denoCron.cron("5 */1 * * * *", async () => {
       await this.closeRecruit()
@@ -35,33 +35,36 @@ export class ShiftRecruiter {
   private startRecruit = async () => {
     const target = this.#demoDay.add({ day: 2 })
 
-    ken.botChannel.send({ content: `${target.format("MM月dd日")}の募集を開始します` })
+    ken.botChannel.send({ content: `${target.format("MM月d日")}の募集を開始します` })
 
-    const startRecruitChannel = await this.getRecruitChannel(target)
-    if (startRecruitChannel) {
-      const recruitChannel = new Channel(startRecruitChannel.id)
-      await recruitChannel.send({ content: "<@&1182025900359942226>\rシフト募集を開始します" })
-      await ken.kv.set(["recruit", "id"], startRecruitChannel.id)
-      await ken.kv.set(["recruit", "date"], target.format("MM月d日"))
+    const rc = await this.findRecruitChannel(target)
+    if (rc) {
+      const ch = new Channel(rc.id)
+      await ch.send({ content: "<@&1182025900359942226>\rシフト募集を開始します" })
+      await ken.kv.set(["recruit", "progress"], {
+        id: rc.id,
+        date: target.format("MM月d日")
+      })
+
     } else {
       await ken.botChannel.send({ content: "募集先のチャンネルがない" })
     }
   }
 
   private closeRecruit = async () => {
-    const timeline = new Map<string, boolean[]>()
+    const timeline = new Map<bigint, boolean[]>()
     await ken.botChannel.send({ content: `募集中のチャンネルでの募集を終了します` })
 
-    const closeRecruitChannelID = (await ken.kv.get<bigint>(["recruit", "id"])).value
-    if (closeRecruitChannelID) {
-      const recruitChannel = new Channel(closeRecruitChannelID)
-      await recruitChannel.send({ content: `シフト募集を終了します` })
+    const progress = (await ken.kv.get<{id: bigint, date: string}>(["recruit", "progress"])).value
+    if (progress?.id) {
+      const ch = new Channel(progress.id)
+      await ch.send({ content: `シフト募集を終了します` })
 
-      const messages = await recruitChannel.messages()
+      const messages = await ch.messages()
       await Promise.all(messages.map(async message => {
         // ignore the bot's message
-        if (message.authorId == ken.id) return
-        const user = await ken.guild.member(message.authorId)
+        if (message.authorId === ken.id) return
+        const member = await ken.guild.member(message.authorId)
 
         const requestContent = message.content.match(/[0-9-,\s]+/)?.[0]
         if (!requestContent) return
@@ -72,29 +75,27 @@ export class ShiftRecruiter {
           const se = request.split("-")
           return [...Array(+se[1] - +se[0])].map((_, i) => i + +se[0])
         })
-        timeline.set(user.user?.username!, [...Array(24).fill(false).map((_, i) => times.includes(i))])
+        timeline.set(member.id, [...Array(24).fill(false).map((_, i) => times.includes(i))])
       }))
-      await ken.kv.delete(["recruit", "id"])
+      await ken.kv.delete(["recruit", "progress"])
 
     } else {
       await ken.botChannel.send({ content: `募集中のチャンネルがありません` })
     }
 
-    const date = await ken.kv.get<string>(["recruit", "date"])
-    timeline.forEach(async (times, user) => {
-      await this.tlHelper.setTimeline(date.value!, user, times)
-      await ken.botChannel.send({ content: `${user}|${times.join(",")}` })
-    })
+    timeline.forEach(async (times, userID) =>
+      await this.sheetTimelineHelper.setTimeline(progress?.date!, userID, times)
+    )
   }
 
   nextDay = async () => {
     this.#demoDay = this.#demoDay.add({ day: 1 })
-    await ken.botChannel.send({ content: `${this.#demoDay.format("現在MM月dd日です")}` })
+    await ken.botChannel.send({ content: `${this.#demoDay.format("現在MM月d日です")}` })
   }
 
   resetDay = () => this.#demoDay = ptera.datetime()
 
-  getRecruitChannel = async (dt: ptera.DateTime): Promise<Channelx | undefined> => (
+  findRecruitChannel = async (dt: ptera.DateTime): Promise<Channelx | undefined> => (
     await ken.guild.channels()).filter(
       ch => ch.name !== undefined && Boolean(ch.name.match(/^[0-9]+月[0-9]+日.*$/))
     ).find(ch => {

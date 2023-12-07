@@ -28,7 +28,4 @@ export class Guild {
     )
     return await transformMember(result, this.id, id)
   }
-
-  memberByUsername = async (username: string) =>
-    (await this.members()).find(member => member.user?.username === username)
 }
