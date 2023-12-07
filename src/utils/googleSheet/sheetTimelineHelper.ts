@@ -3,8 +3,8 @@ import { GoogleSheetWorkbook } from "./googleSheet.ts";
 import { ken } from "../../client/ken.ts";
 
 export class SheetTimelineHelper {
-  private wb: GoogleSheetWorkbook
-  private sheet: GoogleSpreadsheetWorksheet
+  private wb!: GoogleSheetWorkbook
+  private sheet!: GoogleSpreadsheetWorksheet
 
   constructor () {
     (async () => {
@@ -34,7 +34,7 @@ export class SheetTimelineHelper {
     if (userRow) return userRow
 
     const member = await ken.guild.memberByUsername(username)
-    return this.addRow({ username: username, name: member!.user?.globalName! })
+    return this.addRow({ username: username, name: member!.displayName })
   }
 
   private addRow = async (data: string[] | Record<string, string | number | boolean>) => await this.sheet.addRow(data)

@@ -18,6 +18,7 @@ export function  transformMember(payload: DiscordMember, guildId: bigint, userId
     ? Date.parse(payload.communication_disabled_until)
     : undefined,
     toggles: new MemberToggles(payload),
+    get displayName () { return this.nick ?? this.user?.globalName ?? "No Name" }
   };
 
   return member as Optionalize<typeof member>;
