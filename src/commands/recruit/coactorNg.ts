@@ -1,6 +1,5 @@
 import { ken } from "../../client/ken.ts";
 import { TextStyles } from "../../deps.ts";
-import { Channel } from "../../structures/discord/channel.ts";
 import { createActionRow, createInputText } from "../../utils/discord/components.ts";
 import { MessageFlags } from "../../utils/discord/message.ts";
 import { createCommand } from "../../utils/mod.ts"
