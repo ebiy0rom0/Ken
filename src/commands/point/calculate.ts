@@ -1,4 +1,5 @@
 import { ken } from "../../client/ken.ts";
+import { Messages } from "../../config/messages.ts";
 import { ApplicationCommandOptionTypes, ButtonStyles } from "../../deps.ts";
 import { createActionRow, createButton } from "../../utils/discord/components.ts";
 import { createEmbed } from "../../utils/discord/embed.ts";
@@ -24,10 +25,10 @@ export default createCommand({
     const message = combi.slice(0,10).map(v => `${String(v.score)} ~ ${v.score + 19999} (${v.bonus}%)`).join("\r")
     await ctx.reply({
       customId: name,
-      content: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。",
+      content: Messages.Calc.Info,
       embeds: [
         createEmbed({
-          title: `🦐🦐 ${points}pt 🦐🦐`,
+          title: `🦐🦐 ${points}pt`,
           description: message,
           color: 0xffa500
         })
