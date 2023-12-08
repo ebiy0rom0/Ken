@@ -10,4 +10,5 @@ export const Config = {
   ROOM_CHANNEL_ID:        Deno.env.get("ROOM_CHANNEL_ID")!,
   LISTEN_ONLY_CHANNEL_ID: Deno.env.get("LISTEN_ONLY_CHANNEL_ID")!,
   BOT_INFO_CHANNEL_ID:    Deno.env.get("BOT_INFO_CHANNEL_ID")!,
+  RUNNER_USER_ID:         Deno.env.get("RUNNER_USER_ID")!,
 }
