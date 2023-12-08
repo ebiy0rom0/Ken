@@ -11,4 +11,5 @@ export const Config = {
   LISTEN_ONLY_CHANNEL_ID: Deno.env.get("LISTEN_ONLY_CHANNEL_ID")!,
   BOT_INFO_CHANNEL_ID:    Deno.env.get("BOT_INFO_CHANNEL_ID")!,
   RUNNER_USER_ID:         Deno.env.get("RUNNER_USER_ID")!,
+  DEFAULT_BURN_MESSAGE:   Deno.env.get("DEFAULT_BURN_MESSAGE")!
 }
