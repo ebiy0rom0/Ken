@@ -1,5 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Interaction, InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts";
+import { MessageFlags } from "../../utils/mod.ts";
 
 export class InteractionContext {
   replied = false
@@ -14,23 +15,30 @@ export class InteractionContext {
   }
 
   reply = async (options: InteractionCallbackData) => {
-    if (!this.replied) {
-      this.replied = true
-      await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: options
-      })
-    } else {
-      await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-        data: options
-      })
+    if (this.replied) {
+      await ken.helpers.editOriginalInteractionResponse(
+        this.interaction.token,
+        options
+      )
+      return
     }
+
+    this.replied = true
+    await ken.helpers.sendInteractionResponse(
+      this.interaction.id,
+      this.interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options
+    })
   }
 
-  sendDeffer = async (options: InteractionCallbackData) => {
+  replyOnce = async (options: InteractionCallbackData) => {
     if (this.replied) return
-    await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+
+    this.replied = true
+    await ken.helpers.sendInteractionResponse(
+      this.interaction.id,
+      this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options
     })
