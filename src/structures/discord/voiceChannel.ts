@@ -2,11 +2,9 @@ import { ken } from "../../client/ken.ts";
 import { ChannelTypes } from "../../deps.ts"
 
 export class VoiceChannel {
-  constructor(private id: bigint) {
-    (async () => await this.existVoiceChannel())()
-  }
+  constructor(private id: bigint) {}
 
-  private existVoiceChannel = async () => {
+  exists = async () => {
     if (!(await ken.guild.channels()).has(this.id)) throw Error(`Channel is not exists: ${this.id}`)
     const ch = await ken.helpers.getChannel(this.id)
     if (ch.type !== ChannelTypes.GuildVoice) throw Error(`Invalid channel type: ${this.id}`)
