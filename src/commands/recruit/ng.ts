@@ -6,8 +6,8 @@ import { MessageFlags } from "../../utils/discord/message.ts";
 import { createCommand } from "../../utils/mod.ts"
 
 export default createCommand({
-  name: "coactor-ng",
-  description: "Applying for a co-starring NG. This command is not visible to others.",
+  name: "ng",
+  description: "共演NGを申告します。入力内容は管理者専用チャンネルに送信されます。",
 
   execute: async ctx => {
     const ng = createInputText({

@@ -7,7 +7,7 @@ import { createCommand } from "../../utils/mod.ts";
 
 export default createCommand({
   name: "calc-point",
-  description: "Culculate needs bonus and socre range.",
+  description: "独りんぼエンヴィーのポイント獲得表を表示します。",
   options: [
     {
       type: ApplicationCommandOptionTypes.Integer,

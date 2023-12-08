@@ -3,7 +3,7 @@ import { createCommand } from "../../utils/mod.ts"
 
 export default createCommand({
   name: "recruit",
-  description: "Start the shift recruitment. Performed on a regular daily basis.",
+  description: "【管理者用】シフト募集を開始します。",
 
   execute: async _ctx => await ken.recruiter.start()
 })

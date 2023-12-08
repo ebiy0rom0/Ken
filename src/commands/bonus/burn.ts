@@ -8,13 +8,13 @@ import { Reminder, ReminderTypes } from "../../utils/reminder.ts";
 
 export default createCommand({
   name: "burn",
-  description: "Regularly urge runner to burn live-bonuses.",
+  description: "【ランナー用】炊き忘れ防止リマインダーを起動します。",
   options: [
     {
       type: ApplicationCommandOptionTypes.Integer,
       name: "interval",
-      description: "notification interval(in minutes)",
-    }
+      description: "通知間隔(分)[デフォルト: 15分]",
+    },
   ],
 
   execute: async ctx => {
@@ -22,7 +22,8 @@ export default createCommand({
       return
     }
 
-    await ctx.reply({ content: T(Messages.Bonus.Start, "りはびり") })
+    await ctx.reply({ content: T(Messages.Bonus.Start, "りはびり") }) // FIXME: using member's global name?
+
 
     const interval = ctx.getOption<number>("interval") ?? 15
     const reminder = new Reminder(ReminderTypes.BURN)
