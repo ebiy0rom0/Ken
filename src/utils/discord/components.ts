@@ -1,4 +1,4 @@
-import { ActionRow, InputTextComponent, Interaction, InteractionTypes, MessageComponentTypes } from "../../deps.ts";
+import { ActionRow, ButtonComponent, InputTextComponent, Interaction, InteractionTypes, MessageComponentTypes } from "../../deps.ts";
 
 type OptionalProperty<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
@@ -15,4 +15,11 @@ export const createInputText = (
 ): InputTextComponent => ({
   ...component,
   type: MessageComponentTypes.InputText
+})
+
+export const createButton = (
+  component: OptionalProperty<ButtonComponent, "type">
+): ButtonComponent => ({
+  ...component,
+  type: MessageComponentTypes.Button
 })
