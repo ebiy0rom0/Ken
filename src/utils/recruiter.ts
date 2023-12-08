@@ -3,7 +3,7 @@ import { denoCron, ptera, Channel as Channelx } from "../deps.ts";
 import { Channel } from "../structures/discord/channel.ts";
 import { SheetTimelineHelper } from "./googleSheet/sheetTimelineHelper.ts";
 
-export class ShiftRecruiter {
+export class Recruiter {
   #demoDay: ptera.DateTime  // demo only
   sheetTimelineHelper: SheetTimelineHelper
 
