@@ -1,5 +1,6 @@
 import { ken } from "../../client/ken.ts"
 import { errorCommand } from "../../commands/error.ts";
+import { Messages } from "../../config/messages.ts";
 import { Interaction } from "../../deps.ts";
 import { ChatInputInteractionContext } from "../../structures/commands/chatInputInteractionContext.ts";
 import { ComponentInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
@@ -9,13 +10,16 @@ import { MessageFlags } from "../../utils/discord/message.ts";
 
 export const setInteractionCreate = () => {
   ken.events.interactionCreate = async (_, interaction) => {
+    console.log(interaction)
     const ctx = await (isComponentInteraction(interaction) ?
         executeComponentInteraction(interaction)
       : executeChatInputInteraction(interaction))
 
-    await ctx.sendDeffer({
+    // Replying to interactions is required.
+    // If you forget to reply, return something.
+    await ctx.replyOnce({
       flags: MessageFlags.EPHEMERAL,
-      content: "へんじがないただのしかばねのようだ"
+      content: Messages.Error.ForgetReply
     })
   }
 }
