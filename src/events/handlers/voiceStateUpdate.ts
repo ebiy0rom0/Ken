@@ -1,5 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
+import { Messages, T } from "../../config/messages.ts";
 import { Channel } from "../../structures/discord/channel.ts";
 import { VoiceChannel } from "../../structures/discord/voiceChannel.ts";
 import { Reminder, ReminderTypes } from "../../utils/mod.ts";
@@ -24,20 +25,20 @@ export const setVoiceStateUpdate = () => {
 
       await vc.entry(member.id)
       if (await vc.isFirstEntry()) {
-        await ken.botChannel.send({ content: `炊き忘れ防止リマインダー 起動` })
+        await ken.botChannel.send({ content: T(Messages.Bonus.Start, "りはびり") })
 
         const reminder = new Reminder(ReminderTypes.BURN)
         const channel  = new Channel(ken.transformers.snowflake(Config.LISTEN_ONLY_CHANNEL_ID))
         reminder.start(
           5 * 1000,
-          async () => await channel.send({ content: "<:emoji_14:1176498845333598269>" })
+          async () => await channel.send({ content: Config.DEFAULT_BURN_MESSAGE })
         )
       }
 
     } else {
       await vc.exit(member.id)
       if (await vc.isEmpty()) {
-        await ken.botChannel.send({ content: `炊き忘れ防止リマインダー 停止` })
+        await ken.botChannel.send({ content: Messages.Bonus.Stop })
         ken.reminders.get(ReminderTypes.BURN)?.stop()
       }
     }

@@ -9,13 +9,15 @@ import { Reminder, ReminderTypes } from "../../utils/reminder.ts";
 export default createCommand({
   name: "burn",
   description: "【ランナー用】炊き忘れ防止リマインダーを起動します。",
-  options: [
-    {
-      type: ApplicationCommandOptionTypes.Integer,
-      name: "interval",
-      description: "通知間隔(分)[デフォルト: 15分]",
-    },
-  ],
+  options: [{
+    type: ApplicationCommandOptionTypes.Integer,
+    name: "interval",
+    description: "通知間隔(分)[デフォルト: 15分]",
+  }, {
+    type: ApplicationCommandOptionTypes.String,
+    name: "message",
+    description: "リマインドメッセージ",
+  }],
 
   execute: async ctx => {
     if (ken.reminders.has(ReminderTypes.BURN)) {
@@ -26,11 +28,13 @@ export default createCommand({
 
 
     const interval = ctx.getOption<number>("interval") ?? 15
+    const message  = ctx.getOption<string>("message") ?? Config.DEFAULT_BURN_MESSAGE
+
     const reminder = new Reminder(ReminderTypes.BURN)
     const channel  = new Channel(ken.transformers.snowflake(Config.LISTEN_ONLY_CHANNEL_ID))
     reminder.start(
-      interval * 1000,
-      async () => await channel.send({ content: "<:emoji_14:1176498845333598269>" })
+      interval * 60 * 1000,
+      async () => await channel.send({ content: message })
     )
   }
 })
