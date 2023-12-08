@@ -21,7 +21,8 @@ export class VoiceChannel {
   isFirstEntry = async () => (await this.participantsCount()) === 1
   isEmpty = async () => (await this.participantsCount()) === 0
 
-  isEntered = async (id: bigint) => Boolean((await ken.kv.get(["vc", this.id, id])).value)
+  isEntered = async (id: bigint) => (await ken.kv.get(["vc", this.id, id])).value !== null
+
   entry = async (id: bigint) => await ken.kv.set(["vc", this.id, id], true)
   exit  = async (id: bigint) => await ken.kv.delete(["vc", this.id, id])
 }

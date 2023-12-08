@@ -16,17 +16,17 @@ export const setVoiceStateUpdate = () => {
 
     // If member exit the voice channel, use the default channel ID
     // because the channel ID is empty in voice state.
-    const vc = await new VoiceChannel(voiceState.channelId! ?? Config.VOICE_CHANNEL_ID)
+    const vc = new VoiceChannel(voiceState.channelId! ?? ken.transformers.snowflake(Config.VOICE_CHANNEL_ID))
     if (voiceState.channelId) {
       if (await vc.isEntered(member.id)) return
 
-      vc.entry(member.id)
+      await vc.entry(member.id)
       if (await vc.isFirstEntry()) {
         ken.botChannel.send({ content: `営業開始 DA☆` })
       }
 
     } else {
-      vc.exit(member.id)
+      await vc.exit(member.id)
       if (await vc.isEmpty()) {
         await ken.botChannel.send({ content: `営業終了 DA☆` })
       }
