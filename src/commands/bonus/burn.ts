@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
-import { Messages } from "../../config/messages.ts";
+import { Messages, T } from "../../config/messages.ts";
 import { ApplicationCommandOptionTypes } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
 import { createCommand } from "../../utils/mod.ts"
@@ -22,7 +22,7 @@ export default createCommand({
       return
     }
 
-    await ctx.reply({ content: Messages.Bonus.Start })
+    await ctx.reply({ content: T(Messages.Bonus.Start, "りはびり") })
 
     const interval = ctx.getOption<number>("interval") ?? 15
     const reminder = new Reminder(ReminderTypes.BURN)

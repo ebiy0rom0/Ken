@@ -1,5 +1,6 @@
 import { ken } from "../../client/ken.ts";
-import { TextStyles } from "../../deps.ts";
+import { Messages } from "../../config/messages.ts";
+import { InteractionTypes, TextStyles } from "../../deps.ts";
 import { createActionRow, createInputText } from "../../utils/discord/components.ts";
 import { MessageFlags } from "../../utils/discord/message.ts";
 import { createCommand } from "../../utils/mod.ts"
@@ -26,8 +27,9 @@ export default createCommand({
     const ng = ctx.getOption<string>("ng")
     await ctx.reply({
       flags: MessageFlags.EPHEMERAL,
-      content: `${ng}`
+      content: Messages.Recruit.NGReport
     })
+    InteractionTypes.MessageComponent
     const member = await ken.guild.member(ctx.userID)
     await ken.botChannel.send({ content: `NG:${member.displayName} => ${ng}` })
   }
