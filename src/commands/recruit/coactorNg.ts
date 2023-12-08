@@ -28,6 +28,7 @@ export default createCommand({
       flags: MessageFlags.EPHEMERAL,
       content: `${ng}`
     })
-    await ken.botChannel.send({ content: `NG:${ctx.username} => ${ng}` })
+    const member = await ken.guild.member(ctx.userID)
+    await ken.botChannel.send({ content: `NG:${member.displayName} => ${ng}` })
   }
 })
