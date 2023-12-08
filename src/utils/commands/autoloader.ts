@@ -25,11 +25,10 @@ export const loadCommands = async (): Promise<void> => {
 const upsertApplicationCommands = async () => {
   try {
     await ken.helpers.upsertGuildApplicationCommands(
-      Config.ALLOWED_GUILD_ID, // too bad..
+      Config.ALLOWED_GUILD_ID,
       ken.commands.array(),
     )
   } catch (error) {
     console.log(`Error while registing commands: ${error}`)
   }
 }
-
