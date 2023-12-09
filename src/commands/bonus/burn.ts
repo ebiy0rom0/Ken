@@ -7,7 +7,7 @@ import { createCommand, Reminder, ReminderTypes } from "../../utils/mod.ts"
 
 export default createCommand({
   name: "burn",
-  description: "【ランナー用】炊き忘れ防止リマインダーを起動します。",
+  description: "炊き忘れ防止リマインダーを起動します。【ランナー用】",
   options: [{
     type: ApplicationCommandOptionTypes.Integer,
     name: "interval",

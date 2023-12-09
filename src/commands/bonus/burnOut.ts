@@ -5,7 +5,7 @@ import { ReminderTypes, createCommand } from "../../utils/mod.ts"
 
 export default createCommand({
   name: "burn-out",
-  description: "【ランナー用】炊き忘れ防止リマインダーを停止します。",
+  description: "炊き忘れ防止リマインダーを停止します。【ランナー用】",
 
   execute: async ctx => {
     if (!ken.reminders.has(ReminderTypes.BURN)) {
