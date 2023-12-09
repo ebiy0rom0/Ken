@@ -1,8 +1,20 @@
 import { InteractionContext } from "./interactionContext.ts";
 
-export class ComponentInteractionContext extends InteractionContext {
-  getOption = <T>(name: string): T | undefined => {
+export interface ComponentInteractionContext extends InteractionContext {
+  get command (): string
+  get content (): string
+}
+
+export class ModalInteractionContext extends InteractionContext implements ComponentInteractionContext {
+  get command () { return this.interaction.data?.customId! }
+  get content () {
     const row = this.interaction.data?.components?.shift()
-    return row?.components?.find(component => component.customId = name)?.value as T
+    const form = row?.components?.shift()
+    return form?.value!
   }
+}
+
+export class MessageComponentInteractionContext extends InteractionContext implements ComponentInteractionContext {
+  get command () { return this.interaction.message?.interaction?.name! }
+  get content () { return this.interaction.data?.customId! }
 }

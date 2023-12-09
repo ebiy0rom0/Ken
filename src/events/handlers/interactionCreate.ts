@@ -1,9 +1,9 @@
 import { ken } from "../../client/ken.ts"
 import { errorCommand } from "../../commands/error.ts";
 import { Messages } from "../../config/messages.ts";
-import { Interaction } from "../../deps.ts";
+import { Interaction, InteractionTypes } from "../../deps.ts";
 import { ChatInputInteractionContext } from "../../structures/commands/chatInputInteractionContext.ts";
-import { ComponentInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
+import { MessageComponentInteractionContext, ModalInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
 import { InteractionContext } from "../../structures/commands/interactionContext.ts";
 import { isComponentInteraction, MessageFlags } from "../../utils/mod.ts";
 
@@ -30,10 +30,14 @@ const executeChatInputInteraction = async (interaction: Interaction): Promise<In
 }
 
 const executeComponentInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
-  const ctx = new ComponentInteractionContext(interaction)
-  const command = ken.commands.get(interaction.message?.interaction?.name!) ?? errorCommand
-  if (command?.componet) {
-    await command?.componet(ctx)
+  const ctx =
+    interaction.type == InteractionTypes.MessageComponent ?
+      new MessageComponentInteractionContext(interaction) :
+      new ModalInteractionContext(interaction)
+
+  const command = ken.commands.get(ctx.command) ?? errorCommand
+  if (command?.executeComponent) {
+    await command?.executeComponent(ctx)
   }
   return ctx
 }

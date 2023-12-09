@@ -3,6 +3,8 @@ import { InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts
 import { InteractionContext } from "./interactionContext.ts";
 
 export class ChatInputInteractionContext extends InteractionContext {
+  get command () { return this.interaction.data?.name }
+
   replyWithModal = async (options: InteractionCallbackData) => {
     this.replied = true
     await ken.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
