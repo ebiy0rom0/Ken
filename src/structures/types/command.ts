@@ -4,5 +4,5 @@ import { ComponentInteractionContext } from "../commands/componentInteractionCon
 
 export interface ChatInputInteractionCommand extends Readonly<CreateSlashApplicationCommand> {
   readonly execute: (context: ChatInputInteractionContext) => Promise<unknown>
-  readonly componet?: (context: ComponentInteractionContext) => Promise<unknown>
+  readonly executeComponent?: (context: ComponentInteractionContext) => Promise<unknown>
 }
