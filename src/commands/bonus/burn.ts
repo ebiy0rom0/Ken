@@ -3,8 +3,7 @@ import { Config } from "../../config/config.ts";
 import { Messages, T } from "../../config/messages.ts";
 import { ApplicationCommandOptionTypes } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
-import { createCommand } from "../../utils/mod.ts"
-import { Reminder, ReminderTypes } from "../../utils/reminder.ts";
+import { createCommand, Reminder, ReminderTypes } from "../../utils/mod.ts"
 
 export default createCommand({
   name: "burn",

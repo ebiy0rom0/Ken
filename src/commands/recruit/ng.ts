@@ -1,9 +1,12 @@
 import { ken } from "../../client/ken.ts";
 import { Messages } from "../../config/messages.ts";
 import { InteractionTypes, TextStyles } from "../../deps.ts";
-import { createActionRow, createInputText } from "../../utils/discord/components.ts";
-import { MessageFlags } from "../../utils/discord/message.ts";
-import { createCommand } from "../../utils/mod.ts"
+import {
+  createActionRow,
+  createInputText,
+  MessageFlags,
+  createCommand
+} from "../../utils/mod.ts";
 
 export default createCommand({
   name: "ng",

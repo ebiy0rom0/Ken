@@ -32,3 +32,5 @@ const upsertApplicationCommands = async () => {
     console.log(`Error while registing commands: ${error}`)
   }
 }
+
+export const createCommand = (command: ChatInputInteractionCommand) => command

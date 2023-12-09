@@ -1,9 +1,15 @@
 import { ken } from "../../client/ken.ts";
 import { Messages } from "../../config/messages.ts";
-import { ApplicationCommandOptionTypes, ButtonStyles } from "../../deps.ts";
-import { createActionRow, createButton } from "../../utils/discord/components.ts";
-import { createEmbed } from "../../utils/discord/embed.ts";
-import { createCommand } from "../../utils/mod.ts";
+import {
+  ApplicationCommandOptionTypes,
+  ButtonStyles
+} from "../../deps.ts";
+import {
+  createActionRow,
+  createButton,
+  createEmbed,
+  createCommand
+} from "../../utils/mod.ts";
 
 export default createCommand({
   name: "calc-point",
@@ -18,11 +24,14 @@ export default createCommand({
   ],
 
   execute: async ctx => {
+    await ctx.saveToken()
     const now = 1
     const points = ctx.getOption<number>("points")!
     const combi = await ken.calcurator.findCombination(points)
     const max = Math.ceil(combi.length / 10)
-    const message = combi.slice(0,10).map(v => `${String(v.score)} ~ ${v.score + 19999} (${v.bonus}%)`).join("\r")
+    const message = combi.slice(0,10).map(v =>
+      `${String(v.score.toLocaleString())} ~ ${(v.score + 19999).toLocaleString()} (${v.bonus}%)`
+    ).join("\r")
     await ctx.reply({
       customId: name,
       content: Messages.Calc.Info,
@@ -39,10 +48,10 @@ export default createCommand({
             label: "◀",
             style: ButtonStyles.Primary,
             customId: "left",
-            disabled: now === 1
+            // disabled: now === 1,
           }),
           createButton({
-            label: `1/${max}`,
+            label: `${now}/${max}`,
             style: ButtonStyles.Secondary,
             customId: "by",
             disabled: true
@@ -58,7 +67,18 @@ export default createCommand({
     })
   },
   componet: async ctx => {
-    console.log("hoge")
-    await ctx.reply({ content: "update" })
+    const id = await ctx.execComponent()
+    ctx.replyOnce({})
+    switch (id) {
+      case "rignt":
+        ctx.editOriginal({ content: "右が押されたのだ" })
+        break
+      case "left":
+        ctx.replyOnce({ content: "左が押されたのだ" })
+        break
+      default:
+        ctx.replyOnce({ content: `${id}が押されたのだ` })
+        break
+    }
   }
 })

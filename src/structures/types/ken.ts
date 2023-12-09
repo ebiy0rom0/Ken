@@ -1,11 +1,13 @@
 import { Bot, Collection } from "../../deps.ts";
-import { Reminder } from "../../utils/mod.ts";
-import { PointCalculator } from "../../utils/pointCalculator.ts";
-import { ReminderType } from "../../utils/reminder.ts";
-import { Recruiter } from "../../utils/recruiter.ts";
 import { Channel } from "../discord/channel.ts";
 import { Guild } from "../discord/guild.ts";
 import { ChatInputInteractionCommand } from "./command.ts";
+import {
+  Reminder,
+  ReminderType,
+  PointCalculator,
+  Recruiter
+} from "../../utils/mod.ts";
 
 export interface Ken extends Bot {
   kv: Deno.Kv

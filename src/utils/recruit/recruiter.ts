@@ -1,11 +1,11 @@
-import { ken } from "../client/ken.ts";
-import { denoCron, ptera, Channel as Channelx } from "../deps.ts";
-import { Channel } from "../structures/discord/channel.ts";
-import { SheetTimelineHelper } from "./googleSheet/sheetTimelineHelper.ts";
+import { ken } from "../../client/ken.ts";
+import { denoCron, ptera, Channel as Channelx } from "../../deps.ts";
+import { Channel } from "../../structures/discord/channel.ts";
+import { TimelineHelper } from "../mod.ts";
 
 export class Recruiter {
   #demoDay: ptera.DateTime  // demo only
-  sheetTimelineHelper: SheetTimelineHelper
+  timelineHelper: TimelineHelper
 
   constructor () {
     this.#demoDay = ptera.datetime({
@@ -13,7 +13,7 @@ export class Recruiter {
       month: ptera.datetime().month,
       day: ptera.datetime().day
     });
-    this.sheetTimelineHelper = new SheetTimelineHelper()
+    this.timelineHelper = new TimelineHelper()
 
     denoCron.cron("5 */1 * * * *", async () => {
       await this.closeRecruit()
@@ -84,7 +84,7 @@ export class Recruiter {
     }
 
     timeline.forEach(async (times, userID) =>
-      await this.sheetTimelineHelper.setTimeline(progress?.date!, userID, times)
+      await this.timelineHelper.setTimeline(progress?.date!, userID, times)
     )
   }
 

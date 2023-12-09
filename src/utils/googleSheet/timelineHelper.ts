@@ -1,8 +1,8 @@
 import { GoogleSpreadsheetWorksheet } from "npm:google-spreadsheet";
-import { GoogleSheetWorkbook } from "./googleSheet.ts";
+import { GoogleSheetWorkbook } from "./workbook.ts";
 import { ken } from "../../client/ken.ts";
 
-export class SheetTimelineHelper {
+export class TimelineHelper {
   private wb!: GoogleSheetWorkbook
   private sheet!: GoogleSpreadsheetWorksheet
 

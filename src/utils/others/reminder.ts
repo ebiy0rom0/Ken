@@ -1,4 +1,4 @@
-import { ken } from "../client/ken.ts";
+import { ken } from "../../client/ken.ts";
 
 export const ReminderTypes = {
   BURN: 1

@@ -5,12 +5,10 @@ import { Interaction } from "../../deps.ts";
 import { ChatInputInteractionContext } from "../../structures/commands/chatInputInteractionContext.ts";
 import { ComponentInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
 import { InteractionContext } from "../../structures/commands/interactionContext.ts";
-import { isComponentInteraction } from "../../utils/discord/components.ts";
-import { MessageFlags } from "../../utils/discord/message.ts";
+import { isComponentInteraction, MessageFlags } from "../../utils/mod.ts";
 
 export const setInteractionCreate = () => {
   ken.events.interactionCreate = async (_, interaction) => {
-    console.log(interaction)
     const ctx = await (isComponentInteraction(interaction) ?
         executeComponentInteraction(interaction)
       : executeChatInputInteraction(interaction))
@@ -33,7 +31,7 @@ const executeChatInputInteraction = async (interaction: Interaction): Promise<In
 
 const executeComponentInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
   const ctx = new ComponentInteractionContext(interaction)
-  const command = ken.commands.get(interaction.data?.customId!) ?? errorCommand
+  const command = ken.commands.get(interaction.message?.interaction?.name!) ?? errorCommand
   if (command?.componet) {
     await command?.componet(ctx)
   }
