@@ -24,7 +24,7 @@ export default createCommand({
       return
     }
 
-    await ctx.reply({ content: T(Messages.Bonus.Start, "りはびり") }) // FIXME: using member's global name?
+    await ctx.reply({ content: T(Messages.Bonus.ManualStart, "ブリジットたん") }) // FIXME: using member's global name?
 
 
     const interval = ctx.getOption<number>("interval") ?? 15

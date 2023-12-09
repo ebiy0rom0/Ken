@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
-import { Messages, T } from "../../config/messages.ts";
+import { Messages } from "../../config/messages.ts";
 import { Channel } from "../../structures/discord/channel.ts";
 import { VoiceChannel } from "../../structures/discord/voiceChannel.ts";
 import { Reminder, ReminderTypes } from "../../utils/mod.ts";
@@ -25,7 +25,7 @@ export const setVoiceStateUpdate = () => {
 
       await vc.entry(member.id)
       if (await vc.isFirstEntry()) {
-        await ken.botChannel.send({ content: T(Messages.Bonus.Start, "りはびり") })
+        await ken.botChannel.send({ content: Messages.Bonus.AutoStart })
 
         const reminder = new Reminder(ReminderTypes.BURN)
         const channel  = new Channel(ken.transformers.snowflake(Config.LISTEN_ONLY_CHANNEL_ID))
@@ -38,7 +38,7 @@ export const setVoiceStateUpdate = () => {
     } else {
       await vc.exit(member.id)
       if (await vc.isEmpty()) {
-        await ken.botChannel.send({ content: Messages.Bonus.Stop })
+        await ken.botChannel.send({ content: Messages.Bonus.AutoStop })
         ken.reminders.get(ReminderTypes.BURN)?.stop()
       }
     }

@@ -1,8 +1,10 @@
 
 export const Messages = {
   Bonus: {
-    Start: "{0}、しっかり炊けよ",
-    Stop: "今日はここまでだな"
+    ManualStart: "{0}、しっかり炊けよ",
+    ManualStop: "今日はここまでだな",
+    AutoStart: "来たな。WEEKEND GARAGE営業開始だ。",
+    AutoStop: "今日は店じまいだ。"
   },
   Recruit: {
     NGReport: "共演NGを受付ました",
