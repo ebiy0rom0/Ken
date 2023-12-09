@@ -26,8 +26,8 @@ export default createCommand({
     })
   },
 
-  componet: async ctx => {
-    const ng = ctx.getOption<string>("ng")
+  executeComponent: async ctx => {
+    const ng = ctx.content
     await ctx.reply({
       flags: MessageFlags.EPHEMERAL,
       content: Messages.Recruit.NGReport
