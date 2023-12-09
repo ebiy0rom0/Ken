@@ -16,7 +16,7 @@ export const Messages = {
     ForgetReply: "へんじがないただのしかばねのようだ"
   },
   Debug: {
-
+    Replace: "{0}、こんにちは"
   }
 }
 
@@ -24,6 +24,6 @@ export const Messages = {
 // short hands "T"emplate replacement.
 // deno-lint-ignore no-explicit-any
 export const T = (template: string, ...args: any[]): string => {
-  args.forEach((_, i) => template.replace(`{${i}}`, args[i]))
+  args.forEach((v, i) => template = template.replace(new RegExp(`\\{${i}\\}`), v))
   return template
 }
