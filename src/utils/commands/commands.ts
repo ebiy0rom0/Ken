@@ -4,6 +4,7 @@ import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
 
 export const loadCommands = async (): Promise<void> => {
+  const staticfiles: string[] = []
   const base = "src/commands/"
   for await (const subdir of fs.walkSync(path.resolve(base))) {
     if (!await fs.exists(path.resolve(base, subdir.name)) || !subdir.isDirectory) continue
@@ -11,14 +12,19 @@ export const loadCommands = async (): Promise<void> => {
     for await (const file of fs.walkSync(path.resolve(base, subdir.name))) {
       if (!file.isFile) continue
 
-      const command = (await import(path.resolve(base, subdir.name, file.name))).default as ChatInputInteractionCommand
-      try {
-        ken.commands.set(command.name, command)
-      } catch (error) {
-        console.log(`Error loading command: ${error}`)
-      }
+      staticfiles.push(path.resolve(base, subdir.name, file.name))
     }
   }
+
+  try {
+    await Promise.all(staticfiles.map(async path => {
+      const command = (await import(path)).default as ChatInputInteractionCommand
+      ken.commands.set(command.name, command)
+    }))
+  } catch (error) {
+    console.log(`Error loading command: ${error}`)
+  }
+
   ken.commands.size > 0 ? upsertApplicationCommands() : console.log("No commands")
 }
 
