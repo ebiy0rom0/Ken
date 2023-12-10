@@ -3,21 +3,22 @@ import { ChatInputInteractionCommand } from "../../structures/types/mod.ts";
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
 
-export const loadCommands = async (): Promise<void> => {
-  const staticfiles: string[] = []
-  const base = "src/commands/"
-  for await (const subdir of fs.walkSync(path.resolve(base))) {
-    if (!await fs.exists(path.resolve(base, subdir.name)) || !subdir.isDirectory) continue
+const collect = async <T>(iter: AsyncIterable<T>): Promise<T[]> => {
+  const results: T[] = []
 
-    for await (const file of fs.walkSync(path.resolve(base, subdir.name))) {
-      if (!file.isFile) continue
-
-      staticfiles.push(path.resolve(base, subdir.name, file.name))
-    }
+  for await (const result of iter) {
+      results.push(result)
   }
 
+  return results
+}
+
+const resourceDir = path.resolve(`src/commands/`)
+export const commands = await collect(fs.walk(resourceDir, { includeDirs: false }))
+
+export const loadCommands = async (): Promise<void> => {
   try {
-    await Promise.all(staticfiles.map(async path => {
+    await Promise.all(commands.map(file => file.path).filter(file => path.extname(file) === ".ts").map(async path => {
       const command = (await import(path)).default as ChatInputInteractionCommand
       ken.commands.set(command.name, command)
     }))
