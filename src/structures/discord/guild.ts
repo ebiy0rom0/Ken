@@ -4,7 +4,8 @@ import { transformMember } from "../transformers/member.ts";
 import { DiscordMemberWithUser } from "../types/mod.ts";
 
 export class Guild {
-  constructor(private id: bigint) {}
+  constructor(public id: bigint) {}
+
   channels = async () => await ken.helpers.getChannels(this.id)
   members = async () => {
     const results = await ken.rest.runMethod<DiscordMemberWithUser[]>(
@@ -20,12 +21,12 @@ export class Guild {
       }),
     )
   }
-  member = async (id: bigint) => {
+  member = async (userID: bigint) => {
     const result = await ken.rest.runMethod<DiscordMemberWithUser>(
       ken.rest,
       "GET",
-      ken.constants.routes.GUILD_MEMBER(this.id, id),
+      ken.constants.routes.GUILD_MEMBER(this.id, userID),
     )
-    return await transformMember(result, this.id, id)
+    return await transformMember(result, this.id, userID)
   }
 }
