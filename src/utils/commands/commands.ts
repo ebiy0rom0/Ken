@@ -19,7 +19,9 @@ export const commands = await collect(fs.walk(resourceDir, { includeDirs: false 
 export const loadCommands = async (): Promise<void> => {
   try {
     await Promise.all(commands.map(file => file.path).filter(file => path.extname(file) === ".ts").map(async path => {
-      const command = (await import(path)).default as ChatInputInteractionCommand
+      const command = (await import(path))
+      console.log(command)
+      const cmd = command.default as ChatInputInteractionCommand
       ken.commands.set(command.name, command)
     }))
   } catch (error) {
