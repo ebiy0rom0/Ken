@@ -1,6 +1,9 @@
 import { dotenv } from "../deps.ts"
 
-dotenv.loadSync({ export: true })
+dotenv.loadSync({
+  export: true,
+  allowEmptyValues: true
+})
 
 export const Config = {
   DISCORD_TOKEN:          Deno.env.get("DISCORD_TOKEN")!,
