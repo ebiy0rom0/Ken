@@ -9,7 +9,6 @@ import __ng from './recruit/ng.ts';
 import __calculate from './point/calculate.ts';
 import __burn from './bonus/burn.ts';
 import __burnOut from './bonus/burnOut.ts';
-import __replace from './test/replace.ts';
 
 export const modules: ChatInputInteractionCommand[] = [
   __topics,
@@ -18,6 +17,5 @@ export const modules: ChatInputInteractionCommand[] = [
   __ng,
   __calculate,
   __burn,
-  __burnOut,
-  __replace
+  __burnOut
 ]
