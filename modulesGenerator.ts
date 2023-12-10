@@ -16,7 +16,11 @@ const allResources = await collect(fs.walk(resourcesDir, { includeDirs: false })
 
 const routeModules = await Promise.all(allResources
   .map(file => file.path)
-  .filter(file => path.extname(file) === ".ts" && !excludeFiles.includes(path.basename(file)))
+  .filter(file =>
+    path.extname(file) === ".ts" &&
+    !excludeFiles.includes(path.basename(file)) &&
+    Boolean(!path.dirname(file).match("test"))
+  )
   .map(file => `./${path.relative(resourcesDir, file)}`
 ))
 
