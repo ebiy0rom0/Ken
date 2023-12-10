@@ -1,5 +1,6 @@
 export * from "./calc/pointCalculator.ts"
 
+export * from "./commands/creator.ts"
 export * from "./commands/commands.ts"
 
 export * from "./discord/components.ts"
