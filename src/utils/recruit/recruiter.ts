@@ -1,4 +1,6 @@
 import { ken } from "../../client/ken.ts";
+import { Config } from "../../config/config.ts";
+import { Messages, rolesMention } from "../../config/messages.ts";
 import { denoCron, ptera, Channel as Channelx } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
 import { TimelineHelper } from "../mod.ts";
@@ -40,7 +42,7 @@ export class Recruiter {
     const rc = await this.findRecruitChannel(target)
     if (rc) {
       const ch = new Channel(rc.id)
-      await ch.send({ content: "<@&1182025900359942226>\rシフト募集を開始します" })
+      await ch.send({ content: `${rolesMention(Config.SUPPORTER_ROLE_ID)}\r${Messages.Recruit}` })
       await ken.kv.set(["recruit", "progress"], {
         id: rc.id,
         date: target.format("MM月d日")
