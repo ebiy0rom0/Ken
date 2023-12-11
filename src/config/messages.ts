@@ -8,8 +8,12 @@ export const Messages = {
   },
   Recruit: {
     NGReport: "共演NGを受付ました",
-    Start: "{0} のシフト募集を開始します",
-    Stop: "{0} のシフトの募集を終了します"
+    Start: "シフト募集 起動",
+    Stop: "シフト募集 停止",
+    Announce: {
+      Start: "{0} のシフト募集を開始します",
+      Close: "{0} のシフトの募集を終了します"
+    },
   },
   Calc: {
     Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。"
@@ -29,3 +33,6 @@ export const T = (template: string, ...args: any[]): string => {
   args.forEach((v, i) => template = template.replace(new RegExp(`\\{${i}\\}`), v))
   return template
 }
+
+export const rolesMention = (id: bigint) => `<@&${id}>`
+export const usersMention = (id: bigint) => `<@!${id}>`
