@@ -20,11 +20,9 @@ export const Messages = {
   },
   Error: {
     ForgetReply: "へんじがないただのしかばねのようだ",
-    RequestTopics: "専門外だからずんだもんにでも頼んでくれ"
+    RequestTopics: "専門外だからずんだもんにでも頼んでくれ",
+    PermissionDenied: "権限が足りない"
   },
-  Debug: {
-    Replace: "{0}、こんにちは"
-  }
 }
 
 // replace from {0} to args[0]
