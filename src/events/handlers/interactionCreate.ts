@@ -1,7 +1,7 @@
 import { ken } from "../../client/ken.ts"
 import { errorCommand } from "../../commands/error.ts";
 import { Messages } from "../../config/messages.ts";
-import { Interaction } from "../../deps.ts";
+import { BitwisePermissionFlags, calculatePermissions, Interaction } from "../../deps.ts";
 import { ChatInputInteractionContext } from "../../structures/commands/chatInputInteractionContext.ts";
 import { NewComponentInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
 import { InteractionContext } from "../../structures/commands/interactionContext.ts";
@@ -25,7 +25,23 @@ export const setInteractionCreate = () => {
 const executeChatInputInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
   const ctx = new ChatInputInteractionContext(interaction)
   const command = ken.commands.get(ctx.command) ?? errorCommand
-  await command?.execute(ctx)
+
+  if (
+    command.needParmBits &&
+    !command.needParmBits.every(bit =>
+      calculatePermissions(
+        interaction.member?.permissions!
+      ).some(p => BitwisePermissionFlags[p] & bit)
+  )) {
+    await ctx.reply({
+      flags: MessageFlags.EPHEMERAL,
+      content: Messages.Error.PermissionDenied
+    })
+
+  } else {
+    await command?.execute(ctx)
+  }
+
   return ctx
 }
 
