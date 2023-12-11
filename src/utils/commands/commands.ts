@@ -1,5 +1,4 @@
 import { ken } from "../../client/ken.ts";
-import { Config } from "../../config/config.ts";
 import { modules } from "../../commands/mod.ts";
 
 export const loadCommands = async (): Promise<void> => {
@@ -16,7 +15,7 @@ export const loadCommands = async (): Promise<void> => {
 const upsertApplicationCommands = async () => {
   try {
     await ken.helpers.upsertGuildApplicationCommands(
-      Config.ALLOWED_GUILD_ID,
+      ken.guild.id,
       ken.commands.array(),
     )
   } catch (error) {
