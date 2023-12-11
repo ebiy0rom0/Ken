@@ -1,10 +1,4 @@
-import { ken } from "../client/ken.ts";
-import { dotenv } from "../deps.ts"
-
-dotenv.loadSync({
-  export: true,
-  allowEmptyValues: true
-})
+import { ken } from "../client/ken.ts"
 
 export const Config = {
   ALLOWED_GUILD_ID:       ken.transformers.snowflake(Deno.env.get("ALLOWED_GUILD_ID")!),
