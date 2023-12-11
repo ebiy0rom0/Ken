@@ -1,6 +1,8 @@
 import { ken } from "../../client/ken.ts";
+import { Config } from "../../config/config.ts";
 import { Messages } from "../../config/messages.ts";
-import { InteractionTypes, TextStyles } from "../../deps.ts";
+import { TextStyles } from "../../deps.ts";
+import { Channel } from "../../structures/discord/channel.ts";
 import {
   createActionRow,
   createInputText,
@@ -27,13 +29,13 @@ export default createCommand({
   },
 
   executeComponent: async ctx => {
+    const ch = new Channel(ken.transformers.snowflake(Config.NG_COLLECT_CHANNEL_ID))
     const ng = ctx.content
     await ctx.reply({
       flags: MessageFlags.EPHEMERAL,
       content: Messages.Recruit.NGReport
     })
-    InteractionTypes.MessageComponent
     const member = await ken.guild.member(ctx.userID)
-    await ken.botChannel.send({ content: `NG:${member.displayName} => ${ng}` })
+    await ch.send({ content: `${member.displayName}\r${ng}` })
   }
 })
