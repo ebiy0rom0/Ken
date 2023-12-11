@@ -1,6 +1,7 @@
 {
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-env --allow-read --unstable ./src/main.ts",
+    "gen": "deno run --allow-read --allow-write ./modulesGenerator.ts",
     "start": "deno run --watch ./src/main.ts"
   }
 }
