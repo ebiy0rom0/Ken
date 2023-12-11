@@ -14,12 +14,12 @@ export const setVoiceStateUpdate = () => {
     // only work with default voice channel
     if (
       voiceState.channelId
-      && voiceState.channelId !== ken.transformers.snowflake(Config.VOICE_CHANNEL_ID)
+      && voiceState.channelId !== Config.VOICE_CHANNEL_ID
     ) return
 
     // If member exit the voice channel, use the default channel ID
     // because the channel ID is empty in voice state.
-    const vc = new VoiceChannel(voiceState.channelId! ?? ken.transformers.snowflake(Config.VOICE_CHANNEL_ID))
+    const vc = new VoiceChannel(voiceState.channelId! ?? Config.VOICE_CHANNEL_ID)
     if (voiceState.channelId) {
       if (await vc.isEntered(member.id)) return
 
@@ -28,7 +28,7 @@ export const setVoiceStateUpdate = () => {
         await ken.botChannel.send({ content: Messages.Bonus.AutoStart })
 
         const reminder = new Reminder(ReminderTypes.BURN)
-        const channel  = new Channel(ken.transformers.snowflake(Config.LISTEN_ONLY_CHANNEL_ID))
+        const channel  = new Channel(Config.LISTEN_ONLY_CHANNEL_ID)
         reminder.start(
           5 * 1000,
           async () => await channel.send({ content: Config.DEFAULT_BURN_MESSAGE })

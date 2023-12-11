@@ -29,13 +29,13 @@ export default createCommand({
   },
 
   executeComponent: async ctx => {
-    const ch = new Channel(ken.transformers.snowflake(Config.NG_COLLECT_CHANNEL_ID))
-    const ng = ctx.content
     await ctx.reply({
       flags: MessageFlags.EPHEMERAL,
       content: Messages.Recruit.NGReport
     })
+
     const member = await ken.guild.member(ctx.userID)
-    await ch.send({ content: `${member.displayName}\r${ng}` })
+    const ch = new Channel(Config.NG_COLLECT_CHANNEL_ID)
+    await ch.send({ content: `${member.displayName}\r${ctx.content}` })
   }
 })
