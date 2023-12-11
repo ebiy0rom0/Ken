@@ -1,9 +1,9 @@
 import { ken } from "../../client/ken.ts"
 import { errorCommand } from "../../commands/error.ts";
 import { Messages } from "../../config/messages.ts";
-import { Interaction, InteractionTypes } from "../../deps.ts";
+import { Interaction } from "../../deps.ts";
 import { ChatInputInteractionContext } from "../../structures/commands/chatInputInteractionContext.ts";
-import { MessageComponentInteractionContext, ModalInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
+import { NewComponentInteractionContext } from "../../structures/commands/componentInteractionContext.ts";
 import { InteractionContext } from "../../structures/commands/interactionContext.ts";
 import { isComponentInteraction, MessageFlags } from "../../utils/mod.ts";
 
@@ -24,16 +24,13 @@ export const setInteractionCreate = () => {
 
 const executeChatInputInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
   const ctx = new ChatInputInteractionContext(interaction)
-  const command = ken.commands.get(interaction.data?.name!) ?? errorCommand
+  const command = ken.commands.get(ctx.command) ?? errorCommand
   await command?.execute(ctx)
   return ctx
 }
 
 const executeComponentInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
-  const ctx =
-    interaction.type == InteractionTypes.MessageComponent ?
-      new MessageComponentInteractionContext(interaction) :
-      new ModalInteractionContext(interaction)
+  const ctx = NewComponentInteractionContext(interaction)
 
   const command = ken.commands.get(ctx.command) ?? errorCommand
   if (command?.executeComponent) {
