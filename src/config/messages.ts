@@ -7,7 +7,7 @@ export const Messages = {
     AutoStop: "今日は店じまいだ。"
   },
   Recruit: {
-    NGReport: "共演NGを受付ました",
+    NGReport: "共演NGを受け付けました",
     Start: "シフト募集 起動",
     Stop: "シフト募集 停止",
     Announce: {
@@ -19,7 +19,8 @@ export const Messages = {
     Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。"
   },
   Error: {
-    ForgetReply: "へんじがないただのしかばねのようだ"
+    ForgetReply: "へんじがないただのしかばねのようだ",
+    RequestTopics: "専門外だからずんだもんにでも頼んでくれ"
   },
   Debug: {
     Replace: "{0}、こんにちは"
