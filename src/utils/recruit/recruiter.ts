@@ -40,17 +40,17 @@ export class Recruiter {
     ken.botChannel.send({ content: `${target.format("MM月d日")}の募集を開始します` })
 
     const rc = await this.findRecruitChannel(target)
-    if (rc) {
-      const ch = new Channel(rc.id)
-      await ch.send({ content: `${rolesMention(Config.SUPPORTER_ROLE_ID)}\r${Messages.Recruit}` })
-      await ken.kv.set(["recruit", "progress"], {
-        id: rc.id,
-        date: target.format("MM月d日")
-      })
-
-    } else {
+    if (!rc) {
       await ken.botChannel.send({ content: "募集先のチャンネルがない" })
+      return
     }
+
+    const ch = new Channel(rc.id)
+    await ch.send({ content: `${rolesMention(Config.SUPPORTER_ROLE_ID)}\r${Messages.Recruit}` })
+    await ken.kv.set(["recruit", "progress"], {
+      id: rc.id,
+      date: target.format("MM月d日")
+    })
   }
 
   private closeRecruit = async () => {
