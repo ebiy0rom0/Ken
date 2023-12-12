@@ -1,5 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
+import { T } from "../../config/messages.ts";
 import { Messages, rolesMention } from "../../config/messages.ts";
 import { denoCron, ptera, Channel as Channelx } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
@@ -17,6 +18,10 @@ export class Recruiter {
     });
     this.timelineHelper = new TimelineHelper()
 
+    // [warning]
+    // The closeRecruit closes the recruitment for the channels saved in kv,
+    // so be sure to register your cron to run before the startRecruit and
+    // allow enough time for recruitment.
     denoCron.cron("5 */1 * * * *", async () => {
       await this.closeRecruit()
     })
@@ -35,13 +40,15 @@ export class Recruiter {
   stop  = () => denoCron.stop()
 
   private startRecruit = async () => {
+    // with prod
+    // const target = this.today().add({ day: 2 })
     const target = this.#demoDay.add({ day: 2 })
 
-    ken.botChannel.send({ content: `${target.format("MM月d日")}の募集を開始します` })
+    ken.botChannel.send({ content: `${T(Messages.Recruit.Admin.Start, target.format("MM月d日"))}` })
 
     const rc = await this.findRecruitChannel(target)
     if (!rc) {
-      await ken.botChannel.send({ content: "募集先のチャンネルがない" })
+      await ken.botChannel.send({ content: Messages.Recruit.Admin.ChannelNotFound })
       return
     }
 
@@ -55,40 +62,46 @@ export class Recruiter {
 
   private closeRecruit = async () => {
     const timeline = new Map<bigint, boolean[]>()
-    await ken.botChannel.send({ content: `募集中のチャンネルでの募集を終了します` })
+    await ken.botChannel.send({ content: Messages.Recruit.Admin.Close })
 
     const progress = (await ken.kv.get<{id: bigint, date: string}>(["recruit", "progress"])).value
-    if (progress?.id) {
-      const ch = new Channel(progress.id)
-      await ch.send({ content: `シフト募集を終了します` })
-
-      const messages = await ch.messages()
-      await Promise.all(messages.map(async message => {
-        // ignore the bot's message
-        if (message.authorId === ken.id) return
-        const member = await ken.guild.member(message.authorId)
-
-        const requestContent = message.content.match(/[0-9-,\s]+/)?.[0]
-        if (!requestContent) return
-
-        const requests = requestContent.replace(/\s+/g, "").split(",")
-
-        const times = requests.flatMap(request => {
-          const se = request.split("-")
-          return [...Array(+se[1] - +se[0])].map((_, i) => i + +se[0])
-        })
-        timeline.set(member.id, [...Array(24).fill(false).map((_, i) => times.includes(i))])
-      }))
-      await ken.kv.delete(["recruit", "progress"])
-
-    } else {
-      await ken.botChannel.send({ content: `募集中のチャンネルがありません` })
+    if (!progress?.id) {
+      await ken.botChannel.send({ content: Messages.Recruit.Admin.ChannelNotExists })
+      return
     }
+
+    const ch = new Channel(progress.id)
+    await ch.send({ content: T(Messages.Recruit.Announce.Close, progress.date) })
+
+    const messages = await ch.messages()
+    await Promise.all(messages.map(async message => {
+      // ignore the bot's message
+      if (message.authorId === ken.id) return
+      const member = await ken.guild.member(message.authorId)
+
+      const requestContent = message.content.match(/[0-9-,\s]+/)?.[0]
+      if (!requestContent) return
+
+      const requests = requestContent.replace(/\s+/g, "").split(",")
+
+      const times = requests.flatMap(request => {
+        const se = request.split("-")
+        return [...Array(+se[1] - +se[0])].map((_, i) => i + +se[0])
+      })
+      timeline.set(member.id, [...Array(24).fill(false).map((_, i) => times.includes(i))])
+    }))
 
     timeline.forEach(async (times, userID) =>
       await this.timelineHelper.setTimeline(progress?.date!, userID, times)
     )
+    await ken.kv.delete(["recruit", "progress"])
   }
+
+  today = () => ptera.datetime({
+    year: ptera.datetime().year,
+    month: ptera.datetime().month,
+    day: ptera.datetime().day
+  })
 
   nextDay = async () => {
     this.#demoDay = this.#demoDay.add({ day: 1 })
