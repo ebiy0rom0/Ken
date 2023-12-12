@@ -4,21 +4,31 @@ export const Messages = {
     ManualStart: "{0}、しっかり炊けよ",
     ManualStop: "今日はここまでだな",
     AutoStart: "来たな。WEEKEND GARAGE営業開始だ。",
-    AutoStop: "今日は店じまいだ。"
+    AutoStop: "今日は店じまいだ。",
+    AlreadyStart: "",
+    AlreadyStop: "",
   },
   Recruit: {
     NGReport: "共演NGを受け付けました",
-    Start: "シフト募集 起動",
-    Stop: "シフト募集 停止",
+    Start: "シフト募集 起動します",
+    Stop: "シフト募集 停止します",
     Announce: {
       Start: "{0} のシフト募集を開始します",
       Close: "{0} のシフトの募集を終了します"
     },
+    Admin: {
+      Start: "{0} のシフト募集を開始します",
+      Close: "募集中のチャンネルでのシフト募集を終了します",
+      ChannelNotFound: "募集先のチャンネルが存在しませんでした",
+      ChannelNotExists: "募集中のチャンネルがありませんでした"
+    }
   },
   Calc: {
     Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。"
   },
   Error: {
+    Exception: "予期せぬエラーが発生した",
+    CommandNotExists: "",
     ForgetReply: "へんじがないただのしかばねのようだ",
     RequestTopics: "専門外だからずんだもんにでも頼んでくれ",
     PermissionDenied: "権限が足りない"

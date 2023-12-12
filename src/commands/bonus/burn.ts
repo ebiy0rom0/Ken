@@ -23,7 +23,8 @@ export default createCommand({
       return
     }
 
-    await ctx.reply({ content: T(Messages.Bonus.ManualStart, "ブリジットたん") }) // FIXME: using member's global name?
+    const runner = await ken.guild.member(Config.RUNNER_USER_ID)
+    await ctx.reply({ content: T(Messages.Bonus.ManualStart, runner.displayName) })
 
 
     const interval = ctx.getOption<number>("interval") ?? 15
