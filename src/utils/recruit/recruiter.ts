@@ -1,6 +1,6 @@
 import { ken } from "../../client/ken.ts";
 import { Config } from "../../config/config.ts";
-import { T } from "../../config/messages.ts";
+import { T, usersMention } from "../../config/messages.ts";
 import { Messages, rolesMention } from "../../config/messages.ts";
 import { denoCron, ptera, Channel as Channelx } from "../../deps.ts";
 import { Channel } from "../../structures/discord/channel.ts";
@@ -53,7 +53,7 @@ export class Recruiter {
     }
 
     const ch = new Channel(rc.id)
-    await ch.send({ content: `${rolesMention(Config.SUPPORTER_ROLE_ID)}\r${Messages.Recruit}` })
+    await ch.send({ content: `${rolesMention(Config.SUPPORTER_ROLE_ID)}\r${T(Messages.Recruit.Announce.Start, target.format("MM月d日"))}` })
     await ken.kv.set(["recruit", "progress"], {
       id: rc.id,
       date: target.format("MM月d日")
@@ -69,6 +69,11 @@ export class Recruiter {
       await ken.botChannel.send({ content: Messages.Recruit.Admin.ChannelNotExists })
       return
     }
+
+    const editch = new Channel(Config.EDIT_CHANNEL_ID)
+    const editlist = await editch.messages()
+    console.log(editlist)
+    const findEdit = (id: bigint) => editlist.find(edit => edit.authorId === id)?.content
 
     const ch = new Channel(progress.id)
     await ch.send({ content: T(Messages.Recruit.Announce.Close, progress.date) })
@@ -89,6 +94,10 @@ export class Recruiter {
         return [...Array(+se[1] - +se[0])].map((_, i) => i + +se[0])
       })
       timeline.set(member.id, [...Array(24).fill(false).map((_, i) => times.includes(i))])
+
+      const edit = findEdit(member.id)
+      ken.botChannel.send({ content: `[DEBUG]${member.displayName} => アンコロール：${member.roles.includes(Config.ENCORE_ROLE_ID)}, 編成: ${edit ?? "提出なし"}` })
+      if (!edit) editch.send({ content: `${usersMention(member.id)} 支援編成出せ😡` })
     }))
 
     timeline.forEach(async (times, userID) =>
@@ -107,8 +116,6 @@ export class Recruiter {
     this.#demoDay = this.#demoDay.add({ day: 1 })
     await ken.botChannel.send({ content: `${this.#demoDay.format("現在MM月d日です")}` })
   }
-
-  resetDay = () => this.#demoDay = ptera.datetime()
 
   findRecruitChannel = async (dt: ptera.DateTime): Promise<Channelx | undefined> => (
     await ken.guild.channels()).filter(
