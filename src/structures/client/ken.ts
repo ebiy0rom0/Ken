@@ -12,7 +12,7 @@ import {
 export const setupKen = async () => {
   ken.kv         = await Deno.openKv()
   ken.guild      = new Guild(Config.ALLOWED_GUILD_ID)
-  ken.botChannel = new Channel(Config.BOT_INFO_CHANNEL_ID)
+  ken.botChannel = await Channel.New(Config.BOT_INFO_CHANNEL_ID)
   ken.commands   = new Collection()
   ken.reminders  = new Collection()
   ken.recruiter  = new Recruiter()

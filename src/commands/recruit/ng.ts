@@ -35,7 +35,7 @@ export default createCommand({
     })
 
     const member = await ken.guild.member(ctx.userID)
-    const ch = new Channel(Config.NG_COLLECT_CHANNEL_ID)
+    const ch = await Channel.New(Config.NG_COLLECT_CHANNEL_ID)
     await ch.send({ content: `${member.displayName}\r${ctx.content}` })
   }
 })

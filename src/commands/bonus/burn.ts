@@ -31,7 +31,7 @@ export default createCommand({
     const message  = ctx.getOption<string>("message") ?? Config.DEFAULT_BURN_MESSAGE
 
     const reminder = new Reminder(ReminderTypes.BURN)
-    const channel  = new Channel(Config.LISTEN_ONLY_CHANNEL_ID)
+    const channel  = await Channel.New(Config.LISTEN_ONLY_CHANNEL_ID)
     reminder.start(
       interval * 60 * 1000,
       async () => await channel.send({ content: message })

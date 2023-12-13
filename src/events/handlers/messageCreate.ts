@@ -7,7 +7,7 @@ export const setMessageCreateEvents = () => {
     // ignore bot's message
     if (message.authorId === ken.id) return
 
-    const channel = new Channel(message.channelId)
+    const channel = await Channel.New(message.channelId)
     switch (true) {
       case Boolean(message.content.match(/^[0-9]{5}$/)):
         {
