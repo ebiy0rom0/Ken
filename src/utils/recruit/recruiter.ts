@@ -12,9 +12,7 @@ export class Recruiter {
 
   constructor () {
     this.#demoDay = ptera.datetime({
-      year: ptera.datetime().year,
-      month: ptera.datetime().month,
-      day: ptera.datetime().day
+      year: 2023, month: 12, day: 13
     });
     this.timelineHelper = new TimelineHelper()
 
@@ -36,7 +34,10 @@ export class Recruiter {
     this.stop()
   }
 
-  start = () => denoCron.start()
+  start = () => {
+    this.#demoDay = this.today()
+    denoCron.start()
+  }
   stop  = () => denoCron.stop()
 
   private startRecruit = async () => {
@@ -84,6 +85,8 @@ export class Recruiter {
     ]
     await recruitChannel.send({ content: T(Messages.Recruit.Announce.Close, recruitmentDate) })
 
+    const hour24 = "(2[0-4]|1[0-9]|[0-9])"
+    const dash = "[\u002D|\u30FC|\u2010|\u2011|\u2013|\u2014|\u2015|\u2212|\uFF70]"
     const messages = await recruitChannel.messages()
     await Promise.all(messages.map(async message => {
       // ignore the bot's message
@@ -91,15 +94,14 @@ export class Recruiter {
 
       // If it can't be determinated that a shift has been submitted,
       // it will not be counted.
-      const submitContent = message.content.match(/[0-9-,\s]+/)?.[0]
-      if (!submitContent) return
-      const memo = message.content.replace(submitContent, "")
+      const submitTimes = message.content.match(new RegExp(`${hour24}${dash}${hour24}`, "g"))
+      if (!submitTimes) return
 
+      const memo = submitTimes.reduce((memo, times) => memo.replace(times, ""), message.content)
       const member = await ken.guild.member(message.authorId)
-      const submitDetails = submitContent.replace(/\s+/g, "").split(",")
 
-      const availableTimes = submitDetails.flatMap(detail => {
-        const [startTime, endTime] = detail.split("-").map(time => +time)
+      const availableTimes = submitTimes.flatMap(detail => {
+        const [startTime, endTime] = detail.split(new RegExp(dash)).map(time => +time)
         return [...Array(endTime - startTime)].map((_, i) => i + startTime)
       })
       timeline.set(member.id, [
@@ -109,9 +111,6 @@ export class Recruiter {
       ])
 
       const formation = findFormation(member.id)
-      ken.botChannel.send({
-        content: `[DEBUG]${member.displayName} => アンコロール：${member.roles.includes(Config.ENCORE_ROLE_ID)}, 編成: ${formation ?? "提出なし"}`
-      })
       if (!formation) formationChannel.send({ content: `${usersMention(member.id)} 支援編成出せ😡` })
     }))
 
