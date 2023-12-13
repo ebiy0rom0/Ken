@@ -93,6 +93,7 @@ export class Recruiter {
       // it will not be counted.
       const submitContent = message.content.match(/[0-9-,\s]+/)?.[0]
       if (!submitContent) return
+      const memo = message.content.replace(submitContent, "")
 
       const member = await ken.guild.member(message.authorId)
       const submitDetails = submitContent.replace(/\s+/g, "").split(",")
@@ -118,6 +119,10 @@ export class Recruiter {
       await this.timelineHelper.setTimeline(recruitmentDate, userID, times)
     )
     await ken.kv.delete(["recruit", "progress"])
+  }
+
+  toAvailableTimes = (submit: string) =>  {
+
   }
 
   private today = () => ptera.datetime({
