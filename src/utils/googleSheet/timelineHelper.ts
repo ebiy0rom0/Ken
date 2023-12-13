@@ -47,6 +47,7 @@ export class TimelineHelper {
     shift.forEach((y, i) => {
       if (y) userRow!.set(this.headers()[offset + i], SUBMISSION_MARK)
     })
+    userRow!.set(date, SUBMISSION_MARK)
     userRow!.save()
   }
 }
