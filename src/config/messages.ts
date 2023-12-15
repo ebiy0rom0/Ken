@@ -26,6 +26,9 @@ export const Messages = {
   Calc: {
     Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。"
   },
+  Room: {
+    Announce: "次の部屋番号は{0}だ。\r準備が出来たら入室してくれ。"
+  },
   Error: {
     Exception: "予期せぬエラーが発生した",
     CommandNotExists: "",
