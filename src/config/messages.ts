@@ -1,4 +1,3 @@
-
 export const Messages = {
   Bonus: {
     ManualStart: "{0}、しっかり炊けよ",
@@ -14,27 +13,27 @@ export const Messages = {
     Stop: "シフト募集 停止します",
     Announce: {
       Start: "{0} のシフト募集を開始します",
-      Close: "{0} のシフトの募集を終了します"
+      Close: "{0} のシフトの募集を終了します",
     },
     Admin: {
       Start: "{0} のシフト募集を開始します",
       Close: "募集中のチャンネルでのシフト募集を終了します",
       ChannelNotFound: "募集先のチャンネルが存在しませんでした",
-      ChannelNotExists: "募集中のチャンネルがありませんでした"
-    }
+      ChannelNotExists: "募集中のチャンネルがありませんでした",
+    },
   },
   Calc: {
-    Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。"
+    Info: "あんよ、あんよ～...っておい。杏に手を出したら承知しないからな。",
   },
   Room: {
-    Announce: "次の部屋番号は{0}だ。\r準備が出来たら入室してくれ。"
+    Announce: "次の部屋番号は{0}だ。\r準備が出来たら入室してくれ。",
   },
   Error: {
     Exception: "予期せぬエラーが発生した",
     CommandNotExists: "",
     ForgetReply: "へんじがないただのしかばねのようだ",
     RequestTopics: "専門外だからずんだもんにでも頼んでくれ",
-    PermissionDenied: "権限が足りない"
+    PermissionDenied: "権限が足りない",
   },
 }
 

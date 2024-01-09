@@ -1,6 +1,6 @@
-import { ken } from "../../client/ken.ts";
-import { Optionalize, UserToggles } from "../../deps.ts";
-import { DiscordUser } from "../types/mod.ts";
+import { ken } from "../../client/ken.ts"
+import { Optionalize, UserToggles } from "../../deps.ts"
+import { DiscordUser } from "../types/mod.ts"
 
 export function transformUser(payload: DiscordUser) {
   const user = {
@@ -15,9 +15,9 @@ export function transformUser(payload: DiscordUser) {
     premiumType: payload.premium_type,
     publicFlags: payload.public_flags,
     toggles: new UserToggles(payload),
-  };
+  }
 
-  return user as Optionalize<typeof user>;
+  return user as Optionalize<typeof user>
 }
 
 // deno-lint-ignore no-empty-interface

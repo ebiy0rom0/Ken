@@ -1,16 +1,12 @@
-import { ken } from "../../client/ken.ts";
-import { Messages } from "../../config/messages.ts";
-import {
-ActionRow,
-  ApplicationCommandOptionTypes,
-  ButtonStyles
-} from "../../deps.ts";
+import { ken } from "../../client/ken.ts"
+import { Messages } from "../../config/messages.ts"
+import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from "../../deps.ts"
 import {
   createActionRow,
   createButton,
+  createCommand,
   createEmbed,
-  createCommand
-} from "../../utils/mod.ts";
+} from "../../utils/mod.ts"
 
 const CONTENTS_LIMIT = 10
 
@@ -23,10 +19,10 @@ export default createCommand({
       name: "points",
       required: true,
       description: "need points",
-    }
+    },
   ],
 
-  execute: async ctx => {
+  execute: async (ctx) => {
     await ctx.saveToken(name, 30000)
     const points = ctx.getOption<number>("points")!
     const combi = await ken.calcurator.findCombination(points)
@@ -37,14 +33,14 @@ export default createCommand({
         createEmbed({
           title: `🦐🦐 ${points}pt`,
           description: generateMessage(combi, CONTENTS_LIMIT, 0),
-          color: 0xffa500
-        })
+          color: 0xffa500,
+        }),
       ],
-      components: [ createPager(combi, CONTENTS_LIMIT, 1, points) ]
+      components: [createPager(combi, CONTENTS_LIMIT, 1, points)],
     })
   },
-  executeComponent: async ctx => {
-    ctx.replyOnce({})  // empty reply
+  executeComponent: async (ctx) => {
+    ctx.replyOnce({}) // empty reply
     const [, now, pt] = parseCustomID(await ctx.content)
     const combination = await ken.calcurator.findCombination(+pt)
 
@@ -55,18 +51,20 @@ export default createCommand({
         createEmbed({
           title: `🦐🦐 ${pt}pt`,
           description: generateMessage(combination, CONTENTS_LIMIT, (+now - 1) * 10),
-          color: 0xffa500
-        })
+          color: 0xffa500,
+        }),
       ],
-      components: [ createPager(combination, CONTENTS_LIMIT, +now, +pt) ]
+      components: [createPager(combination, CONTENTS_LIMIT, +now, +pt)],
     })
-  }
+  },
 })
 
 // deno-lint-ignore no-explicit-any
 const generateMessage = (contents: any[], limit: number, offset: number) =>
-  contents.slice(offset, offset + limit).map(v =>
-    `${String(v.score.toLocaleString())} ~ ${(v.score + 19999).toLocaleString()} (${v.bonus}%)`
+  contents.slice(offset, offset + limit).map((v) =>
+    `${String(v.score.toLocaleString())} ~ ${
+      (v.score + 19999).toLocaleString()
+    } (${v.bonus}%)`
   ).join("\r")
 
 const generateCustomID = (id: string, ...value: (number | string)[]): string =>
@@ -78,7 +76,12 @@ const parseCustomID = (customID: string): [string, ...string[]] => {
 }
 
 // deno-lint-ignore no-explicit-any
-const createPager = (contents: any[], limit: number, now: number, pt: number): ActionRow => {
+const createPager = (
+  contents: any[],
+  limit: number,
+  now: number,
+  pt: number,
+): ActionRow => {
   const max = Math.ceil(contents.length / limit)
   return createActionRow([
     createButton({
@@ -91,13 +94,13 @@ const createPager = (contents: any[], limit: number, now: number, pt: number): A
       label: `${now}/${max}`,
       style: ButtonStyles.Secondary,
       customId: "page",
-      disabled: true
+      disabled: true,
     }),
     createButton({
       label: ">",
       style: ButtonStyles.Primary,
       customId: generateCustomID("right", now + 1, pt),
-      disabled: now === max
-    })
+      disabled: now === max,
+    }),
   ])
 }

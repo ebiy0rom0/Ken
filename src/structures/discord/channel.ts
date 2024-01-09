@@ -1,11 +1,15 @@
-import { ken } from "../../client/ken.ts";
-import { CreateMessage, ModifyChannel, Channel as DiscordenoChannel } from "../../deps.ts"
+import { ken } from "../../client/ken.ts"
+import { Channel as DiscordenoChannel, CreateMessage, ModifyChannel } from "../../deps.ts"
 
 export class Channel {
   private constructor(private ch: DiscordenoChannel) {}
 
-  get id () { return this.ch.id }
-  get name () { return this.ch.name! }
+  get id() {
+    return this.ch.id
+  }
+  get name() {
+    return this.ch.name!
+  }
 
   static New = async (id: bigint) => {
     const ch = await ken.helpers.getChannel(id)

@@ -1,7 +1,7 @@
-import { ken } from "../../client/ken.ts";
+import { ken } from "../../client/ken.ts"
 
 type Combination = {
-  bonus: number,
+  bonus: number
   score: number
 }
 type Combinations = Combination[]
@@ -9,8 +9,8 @@ type Combinations = Combination[]
 export class PointCalculator {
   constructor() {
     const matrix = new Map<number, Combinations>()
-    for (let bonus = 0; bonus < 300; bonus ++) {
-      for (let score = 0; score < 100; score ++) {
+    for (let bonus = 0; bonus < 300; bonus++) {
+      for (let score = 0; score < 100; score++) {
         const pt = Math.floor((100 + score) * (100 + bonus) / 100)
         let combi: Combinations = []
         if (matrix.has(pt)) {

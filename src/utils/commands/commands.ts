@@ -1,11 +1,11 @@
-import { ken } from "../../client/ken.ts";
-import { modules } from "../../commands/mod.ts";
+import { ken } from "../../client/ken.ts"
+import { modules } from "../../commands/mod.ts"
 
 export const loadCommands = async (): Promise<void> => {
   try {
-    await Promise.all(modules.map(async command =>
-      await ken.commands.set(command.name, command)
-    ))
+    await Promise.all(
+      modules.map(async (command) => await ken.commands.set(command.name, command)),
+    )
   } catch (error) {
     console.log(`Error loading command: ${error}`)
   }

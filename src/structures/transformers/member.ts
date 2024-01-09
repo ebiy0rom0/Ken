@@ -1,9 +1,9 @@
-import { ken } from "../../client/ken.ts";
-import { MemberToggles, Optionalize } from "../../deps.ts";
-import { DiscordMember } from "../types/mod.ts";
-import { transformUser } from "./user.ts";
+import { ken } from "../../client/ken.ts"
+import { MemberToggles, Optionalize } from "../../deps.ts"
+import { DiscordMember } from "../types/mod.ts"
+import { transformUser } from "./user.ts"
 
-export function  transformMember(payload: DiscordMember, guildId: bigint, userId: bigint) {
+export function transformMember(payload: DiscordMember, guildId: bigint, userId: bigint) {
   const member = {
     id: userId,
     guildId,
@@ -13,15 +13,19 @@ export function  transformMember(payload: DiscordMember, guildId: bigint, userId
     joinedAt: Date.parse(payload.joined_at),
     premiumSince: payload.premium_since ? Date.parse(payload.premium_since) : undefined,
     avatar: payload.avatar ? ken.utils.iconHashToBigInt(payload.avatar) : undefined,
-    permissions: payload.permissions ? ken.transformers.snowflake(payload.permissions) : undefined,
+    permissions: payload.permissions
+      ? ken.transformers.snowflake(payload.permissions)
+      : undefined,
     communicationDisabledUntil: payload.communication_disabled_until
-    ? Date.parse(payload.communication_disabled_until)
-    : undefined,
+      ? Date.parse(payload.communication_disabled_until)
+      : undefined,
     toggles: new MemberToggles(payload),
-    get displayName () { return this.nick ?? this.user?.globalName ?? "No Name" }
-  };
+    get displayName() {
+      return this.nick ?? this.user?.globalName ?? "No Name"
+    },
+  }
 
-  return member as Optionalize<typeof member>;
+  return member as Optionalize<typeof member>
 }
 
 // deno-lint-ignore no-empty-interface

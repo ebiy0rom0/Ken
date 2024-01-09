@@ -1,7 +1,7 @@
-import { ken } from "../../client/ken.ts";
-import { Collection } from "../../deps.ts";
-import { transformMember } from "../transformers/member.ts";
-import { DiscordMemberWithUser } from "../types/mod.ts";
+import { ken } from "../../client/ken.ts"
+import { Collection } from "../../deps.ts"
+import { transformMember } from "../transformers/member.ts"
+import { DiscordMemberWithUser } from "../types/mod.ts"
 
 export class Guild {
   constructor(public id: bigint) {}
@@ -15,9 +15,13 @@ export class Guild {
     )
 
     return new Collection(
-      results.map(result => {
-        const member = transformMember(result, this.id, ken.transformers.snowflake(result.user.id))
-        return [member.id, member];
+      results.map((result) => {
+        const member = transformMember(
+          result,
+          this.id,
+          ken.transformers.snowflake(result.user.id),
+        )
+        return [member.id, member]
       }),
     )
   }

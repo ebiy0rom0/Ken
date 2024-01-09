@@ -1,7 +1,7 @@
-import { ken } from "../../client/ken.ts";
+import { ken } from "../../client/ken.ts"
 
 export const ReminderTypes = {
-  BURN: 1
+  BURN: 1,
 } as const
 
 export type ReminderType = typeof ReminderTypes[keyof typeof ReminderTypes]

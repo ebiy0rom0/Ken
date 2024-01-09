@@ -1,6 +1,6 @@
-import { dotenv } from "../deps.ts";
+import { dotenv } from "../deps.ts"
 
 dotenv.loadSync({
-    export: true,
-    allowEmptyValues: true
-  })
+  export: true,
+  allowEmptyValues: true,
+})
