@@ -53,7 +53,9 @@ export class Recruiter {
 
     const recruitChannel = await this.findRecruitChannel(target)
     if (!recruitChannel) {
-      await ken.botChannel.send({ content: Messages.Recruit.Admin.ChannelNotFound })
+      await ken.botChannel.send({
+        content: Messages.Recruit.Admin.ChannelNotFound,
+      })
       return
     }
 
@@ -72,7 +74,9 @@ export class Recruiter {
 
     const recruitChannelID = (await ken.kv.get<bigint>(["recruit", "progress"])).value
     if (!recruitChannelID) {
-      await ken.botChannel.send({ content: Messages.Recruit.Admin.ChannelNotExists })
+      await ken.botChannel.send({
+        content: Messages.Recruit.Admin.ChannelNotExists,
+      })
       return
     }
 
@@ -103,9 +107,13 @@ export class Recruiter {
 
       // If it can't be determinated that a shift has been submitted,
       // it will not be counted.
-      const submitTimes = message.content.match(
+      const submitTimes = message.content.replaceAll(
+        /０-９/g,
+        (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0),
+      ).match(
         new RegExp(`${hour24}${dash}${hour24}`, "g"),
       )
+
       if (!submitTimes) return
 
       const memo = submitTimes.reduce(
@@ -115,7 +123,9 @@ export class Recruiter {
       const member = await ken.guild.member(message.authorId)
 
       const availableTimes = submitTimes.flatMap((detail) => {
-        const [startTime, endTime] = detail.split(new RegExp(dash)).map((time) => +time)
+        const [startTime, endTime] = detail.split(new RegExp(dash)).map((
+          time,
+        ) => +time)
         return [...Array(endTime - startTime)].map((_, i) => i + startTime)
       })
       timeline.set(member.id, [
@@ -126,7 +136,9 @@ export class Recruiter {
 
       const formation = findFormation(member.id)
       if (!formation) {
-        formationChannel.send({ content: `${usersMention(member.id)} 支援編成出せ😡` })
+        formationChannel.send({
+          content: `${usersMention(member.id)} 支援編成出せ😡`,
+        })
       }
     }))
 
@@ -149,7 +161,9 @@ export class Recruiter {
   // for debug
   private nextDay = async () => {
     this.#demoDay = this.#demoDay.add({ day: 1 })
-    await ken.botChannel.send({ content: `${this.#demoDay.format("現在MM月d日です")}` })
+    await ken.botChannel.send({
+      content: `${this.#demoDay.format("現在MM月d日です")}`,
+    })
   }
 
   private findRecruitChannel = async (
