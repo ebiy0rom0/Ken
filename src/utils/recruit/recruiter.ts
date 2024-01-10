@@ -108,7 +108,7 @@ export class Recruiter {
       // If it can't be determinated that a shift has been submitted,
       // it will not be counted.
       const submitTimes = message.content.replaceAll(
-        /０-９/g,
+        /[０-９]/g,
         (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0),
       ).match(
         new RegExp(`${hour24}${dash}${hour24}`, "g"),
