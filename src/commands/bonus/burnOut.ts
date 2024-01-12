@@ -2,6 +2,11 @@ import { ken } from "../../client/ken.ts"
 import { Messages } from "../../config/messages.ts"
 import { createCommand, ReminderTypes } from "../../utils/mod.ts"
 
+/**
+ * /burn-out command
+ *
+ * Stops a reminder executed with the /burn command.
+ */
 export default createCommand({
   name: "burn-out",
   description: "炊き忘れ防止リマインダーを停止します。【ランナー用】",

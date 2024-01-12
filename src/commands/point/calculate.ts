@@ -10,6 +10,14 @@ import {
 
 const CONTENTS_LIMIT = 10
 
+/**
+ * /calc-point command
+ *
+ * Displays the score/bonus combinations that will earn you
+ * the points specified in "Hitorinbo Envy".
+ *
+ * @param {number} points - number of points earned
+ */
 export default createCommand({
   name: "calc-point",
   description: "独りんぼエンヴィーのポイント獲得表を表示します。",

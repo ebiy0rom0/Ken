@@ -5,6 +5,16 @@ import { ApplicationCommandOptionTypes } from "../../deps.ts"
 import { Channel } from "../../structures/discord/channel.ts"
 import { createCommand, Reminder, ReminderTypes } from "../../utils/mod.ts"
 
+/**
+ * /burn command
+ *
+ * Post messages at intervals specified by interval parameter.
+ * [note]
+ * This command stops when the bot is restarted.
+ *
+ * @param {number} interval - notification interval [default: 15 minutes]
+ * @param {string} message - remind message [default: env.DEFAULT_BURN_MESSAGE]
+ */
 export default createCommand({
   name: "burn",
   description: "炊き忘れ防止リマインダーを起動します。【ランナー用】",

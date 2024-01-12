@@ -10,6 +10,12 @@ import {
   MessageFlags,
 } from "../../utils/mod.ts"
 
+/**
+ * /ng command
+ *
+ * Open a modal to request a coactor-NG members.
+ * What is entered in the modal is posted to env.NG_COLLECT_CHANNEL_ID channel.
+ */
 export default createCommand({
   name: "ng",
   description: "共演NGを申告します。入力内容は管理者専用チャンネルに送信されます。",
