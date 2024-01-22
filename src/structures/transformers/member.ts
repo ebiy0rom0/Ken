@@ -13,9 +13,7 @@ export function transformMember(payload: DiscordMember, guildId: bigint, userId:
     joinedAt: Date.parse(payload.joined_at),
     premiumSince: payload.premium_since ? Date.parse(payload.premium_since) : undefined,
     avatar: payload.avatar ? ken.utils.iconHashToBigInt(payload.avatar) : undefined,
-    permissions: payload.permissions
-      ? ken.transformers.snowflake(payload.permissions)
-      : undefined,
+    permissions: payload.permissions ? ken.transformers.snowflake(payload.permissions) : undefined,
     communicationDisabledUntil: payload.communication_disabled_until
       ? Date.parse(payload.communication_disabled_until)
       : undefined,

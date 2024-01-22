@@ -6,6 +6,5 @@ export const errorCommand = createCommand({
   description: "common error interaction responder.",
 
   execute: async (ctx) => await ctx.reply({ content: Messages.Error.CommandNotExists }),
-  executeComponent: async (ctx) =>
-    await ctx.reply({ content: Messages.Error.CommandNotExists }),
+  executeComponent: async (ctx) => await ctx.reply({ content: Messages.Error.CommandNotExists }),
 })

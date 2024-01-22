@@ -24,9 +24,7 @@ export const setMessageCreateEvents = () => {
         break
       }
       case Boolean(message.content.match(/えらい/)): {
-        await channel.send({
-          content: `ありがとうございます。\nこれからも頑張りますね。`,
-        })
+        await channel.send({ content: `ありがとうございます。\nこれからも頑張りますね。` })
         break
       }
     }

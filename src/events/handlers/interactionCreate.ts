@@ -48,9 +48,7 @@ const executeChatInputInteraction = async (
   return ctx
 }
 
-const executeComponentInteraction = async (
-  interaction: Interaction,
-): Promise<InteractionContext> => {
+const executeComponentInteraction = async (interaction: Interaction): Promise<InteractionContext> => {
   const ctx = NewComponentInteractionContext(interaction)
 
   const command = ken.commands.get(ctx.command) ?? errorCommand

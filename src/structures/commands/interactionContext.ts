@@ -1,9 +1,5 @@
 import { ken } from "../../client/ken.ts"
-import {
-  Interaction,
-  InteractionCallbackData,
-  InteractionResponseTypes,
-} from "../../deps.ts"
+import { Interaction, InteractionCallbackData, InteractionResponseTypes } from "../../deps.ts"
 
 export class InteractionContext {
   replied = false

@@ -82,8 +82,7 @@ export class Recruiter {
 
     const formationChannel = await Channel.New(Config.EDIT_CHANNEL_ID)
     const formations = await formationChannel.messages()
-    const findFormation = (id: bigint) =>
-      formations.find((edit) => edit.authorId === id)?.content
+    const findFormation = (id: bigint) => formations.find((edit) => edit.authorId === id)?.content
 
     const recruitChannel = await Channel.New(recruitChannelID)
     const [
@@ -142,9 +141,7 @@ export class Recruiter {
       }
     }))
 
-    timeline.forEach(async (times, userID) =>
-      await this.timelineHelper.setTimeline(recruitmentDate, userID, times)
-    )
+    timeline.forEach(async (times, userID) => await this.timelineHelper.setTimeline(recruitmentDate, userID, times))
     await ken.kv.delete(["recruit", "progress"])
   }
 
@@ -191,10 +188,8 @@ export class Recruiter {
     const m = dt.match(pattern)
     return m ? +m[0] : false
   }
-  private getMonthFromJpCalendar = (dt: string) =>
-    this.getFromJpCalendar(dt, /[0-9]+(?=月)/)
-  private getDayFromJpCalendar = (dt: string) =>
-    this.getFromJpCalendar(dt, /[0-9]+(?=日)/)
+  private getMonthFromJpCalendar = (dt: string) => this.getFromJpCalendar(dt, /[0-9]+(?=月)/)
+  private getDayFromJpCalendar = (dt: string) => this.getFromJpCalendar(dt, /[0-9]+(?=日)/)
 
   // datetime parser from channel name
   private parse = (name: string) => name.split(/-/)

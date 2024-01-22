@@ -30,17 +30,14 @@ export class TimelineHelper {
   }
 
   private getUserRow = async (userID: bigint) => {
-    const userRow = (await this.sheet.getRows()).find((row) =>
-      row.get("userID") == userID
-    )
+    const userRow = (await this.sheet.getRows()).find((row) => row.get("userID") == userID)
     if (userRow) return userRow
 
     const member = await ken.guild.member(userID)
     return this.addRow({ userID: String(member.id), name: member!.displayName })
   }
 
-  private addRow = async (data: string[] | Record<string, string | number | boolean>) =>
-    await this.sheet.addRow(data)
+  private addRow = async (data: string[] | Record<string, string | number | boolean>) => await this.sheet.addRow(data)
 
   setTimeline = async (date: string, userID: bigint, shift: boolean[]) => {
     const offset = await this.getDateOffset(date)

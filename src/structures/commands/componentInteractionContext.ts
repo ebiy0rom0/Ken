@@ -6,8 +6,7 @@ export interface ComponentInteractionContext extends InteractionContext {
   get content(): string
 }
 
-export class ModalInteractionContext extends InteractionContext
-  implements ComponentInteractionContext {
+export class ModalInteractionContext extends InteractionContext implements ComponentInteractionContext {
   get command() {
     return this.interaction.data?.customId!
   }
@@ -18,8 +17,7 @@ export class ModalInteractionContext extends InteractionContext
   }
 }
 
-export class MessageComponentInteractionContext extends InteractionContext
-  implements ComponentInteractionContext {
+export class MessageComponentInteractionContext extends InteractionContext implements ComponentInteractionContext {
   get command() {
     return this.interaction.message?.interaction?.name!
   }

@@ -1,12 +1,7 @@
 import { ken } from "../../client/ken.ts"
 import { Messages } from "../../config/messages.ts"
 import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from "../../deps.ts"
-import {
-  createActionRow,
-  createButton,
-  createCommand,
-  createEmbed,
-} from "../../utils/mod.ts"
+import { createActionRow, createButton, createCommand, createEmbed } from "../../utils/mod.ts"
 
 const CONTENTS_LIMIT = 10
 
@@ -67,25 +62,24 @@ export default createCommand({
   },
 })
 
-// deno-lint-ignore no-explicit-any
-const generateMessage = (contents: any[], limit: number, offset: number) =>
+const generateMessage = (
+  contents: ReturnType<typeof ken.calcurator.findCombination> extends Promise<infer U> ? U : never,
+  limit: number,
+  offset: number,
+) =>
   contents.slice(offset, offset + limit).map((v) =>
-    `${String(v.score.toLocaleString())} ~ ${
-      (v.score + 19999).toLocaleString()
-    } (${v.bonus}%)`
+    `${String(v.score.toLocaleString())} ~ ${(v.score + 19999).toLocaleString()} (${v.bonus}%)`
   ).join("\r")
 
-const generateCustomID = (id: string, ...value: (number | string)[]): string =>
-  `${id}:${value.join(":")}`
+const generateCustomID = (id: string, ...value: (number | string)[]): string => `${id}:${value.join(":")}`
 
 const parseCustomID = (customID: string): [string, ...string[]] => {
   const [id, ...values] = customID.split(":")
   return [id, ...values]
 }
 
-// deno-lint-ignore no-explicit-any
 const createPager = (
-  contents: any[],
+  contents: unknown[],
   limit: number,
   now: number,
   pt: number,

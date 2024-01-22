@@ -3,12 +3,7 @@ import { Config } from "../../config/config.ts"
 import { Messages } from "../../config/messages.ts"
 import { TextStyles } from "../../deps.ts"
 import { Channel } from "../../structures/discord/channel.ts"
-import {
-  createActionRow,
-  createCommand,
-  createInputText,
-  MessageFlags,
-} from "../../utils/mod.ts"
+import { createActionRow, createCommand, createInputText, MessageFlags } from "../../utils/mod.ts"
 
 /**
  * /ng command
